@@ -1,0 +1,161 @@
+<!-- 
+  ==============================================================================
+  COLUMN 2: THE DYNAMIC PAYSLIP OUTPUT
+  ==============================================================================
+  This component natively loads in an "Empty State". When main.js receives a 
+  valid JSON payload from Python, it forces this component to render the data 
+  dynamically via .innerText injections and conditional CSS display toggles.
+-->
+<div class="col-xl-4 col-lg-6 col-md-12 mb-4">
+    
+    <!-- SECTION 1: 4-TIER RATES PANEL -->
+    <!-- Enforces strict col-3 grid symmetry to prevent UI shifting during i18n translation -->
+    <div class="card border-0 mb-4" id="rates-panel" style="display: none;">
+        <div class="card-body p-3">
+            <div class="row text-center m-0 w-100 align-items-center">
+                <div class="col-3 px-1"><span class="d-block small text-muted" data-i18n="r_std">Standard</span><strong id="rate-std" class="fs-6">$0.00</strong></div>
+                <div class="col-3 px-1"><span class="d-block small text-muted" data-i18n="r_night">Night</span><strong class="text-warning-custom fs-6" id="rate-night">$0.00</strong></div>
+                <div class="col-3 px-1"><span class="d-block small text-muted" data-i18n="r_ot">OT</span><strong class="text-success-custom fs-6" id="rate-ot">$0.00</strong></div>
+                <div class="col-3 px-1"><span class="d-block small text-muted" data-i18n="r_hol">Holiday</span><strong class="text-success-custom fs-6" id="rate-hol">$0.00</strong></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 2: OFFICIAL PAYSLIP CORE -->
+    <div class="card border-0 mb-4">
+        <div class="card-body p-4 p-xl-5 d-flex flex-column justify-content-start">
+            <h4 class="fw-bold mb-4"><i class="fas fa-receipt me-2" style="color: var(--highlight);"></i> <span data-i18n="t_payslip">Official Payslip</span></h4>
+
+            <!-- AWAITING DATA STATE (Default) -->
+            <div id="empty-state" class="text-center text-muted py-5">
+                <i class="fas fa-fingerprint fa-4x mb-3 opacity-25"></i>
+                <h5 class="fw-bold" data-i18n="t_awaiting">Awaiting Data</h5>
+                <p class="small mt-2 px-4" data-i18n="t_awaiting_sub">Please enter your financial information and schedule on the left to generate your official payslip.</p>
+            </div>
+
+            <!-- ACTIVE DATA STATE -->
+            <div id="results-panel" style="display: none;">
+                
+                <!-- Machine Learning Auto-Detection Logs -->
+                <div class="mb-4 p-3 rounded" style="background-color: rgba(0, 255, 135, 0.05); border: 1px solid rgba(0, 255, 135, 0.2);">
+                    <p class="small mb-1 fw-bold" style="color: var(--highlight);"><i class="fas fa-robot"></i> <span data-i18n="t_engine_auto">Engine Auto-Detected:</span></p>
+                    <p class="small mb-0 text-muted" id="engine-logs" style="line-height: 1.4;"></p>
+                </div>
+                
+                <!-- THE ESTIMATE DISCLAIMER -->
+                <div class="mb-4 p-3 rounded" style="background-color: rgba(253, 187, 45, 0.05); border: 1px solid rgba(253, 187, 45, 0.2);">
+                    <p class="small text-warning-custom mb-0" style="line-height: 1.4;" data-i18n="t_est_disc">
+                        <i class='fas fa-exclamation-triangle me-1'></i> <strong>Estimate Only:</strong> Calculations assume perfect clock-ins. Biometric payslips may vary by cents/minutes.
+                    </p>
+                </div>
+
+                <!-- DYNAMIC LINE ITEMS -->
+                <!-- Rows with 'display: none !important' are conditionally unhidden by main.js if value > 0 -->
+                <ul class="list-group list-group-light list-group-small mb-4">
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0 py-2">
+                        <span data-i18n="p_base">Adjusted Base (Semi-Monthly)</span> <span id="res-base" class="fw-bold">$0.00</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0 py-2" id="row-bonus" style="display: none !important;">
+                        <span data-i18n="p_bonus">Bonus / Additional Pay</span> <span class="text-success-custom" id="res-bonus">+$0.00</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0 py-2" id="row-holiday">
+                        <span data-i18n="p_hol_day">Holiday Pay (Day)</span> <span class="text-success-custom" id="res-holiday">+$0.00</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0 py-2" id="row-hol-night">
+                        <span data-i18n="p_hol_night">Holiday Pay (Night 150%)</span> <span class="text-success-custom" id="res-hol-night">+$0.00</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0 py-2" id="row-night">
+                        <span data-i18n="p_night_sur">Night Shift (25%)</span> <span class="text-warning-custom" id="res-night">+$0.00</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0 py-2" id="row-ot" style="display: none !important;">
+                        <span data-i18n="p_ot">Overtime Pay (Day 200%)</span> <span class="text-success-custom" id="res-ot">+$0.00</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0 py-2" id="row-night-ot" style="display: none !important;">
+                        <span data-i18n="p_night_ot">Night Overtime (250%)</span> <span class="text-success-custom" id="res-night-ot">+$0.00</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0 py-2" id="row-late">
+                        <span data-i18n="p_late">Lateness Deductions</span> <span class="text-danger-custom" id="res-late">-$0.00</span>
+                    </li>
+                    
+                    <!-- Sub-Total: Gross Pay -->
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0 fw-bold border-bottom pb-3 mt-1" style="border-color: var(--border-color) !important;">
+                        <span data-i18n="p_gross">Total Gross Pay</span> <span class="text-success-custom" id="res-gross">$0.00</span>
+                    </li>
+                    
+                    <!-- Statutory Deductions -->
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0 pt-3" id="row-isss">
+                        <span data-i18n="p_isss">ISSS Deduction</span> <span class="text-danger-custom" id="res-isss">-$0.00</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0 py-2" id="row-afp">
+                        <span data-i18n="p_afp">AFP Deduction</span> <span class="text-danger-custom" id="res-afp">-$0.00</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0 py-2" id="row-vialidad">
+                        <span data-i18n="p_vialidad">Municipal Tax Deduction</span> <span class="text-danger-custom" id="res-vialidad">-$0.00</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0 py-2">
+                        <span data-i18n="p_isr">Income Tax Withheld</span> <span class="text-danger-custom" id="res-isr">-$0.00</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0 py-2 border-top pt-2" id="row-custom" style="display:none !important; border-color: var(--border-color) !important;">
+                        <span data-i18n="p_other_ded">Other Deductions</span> <span class="text-danger-custom" id="res-custom">-$0.00</span>
+                    </li>
+                    
+                    <!-- Sub-Total: Deductions -->
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0 fw-bold border-top pt-3 mt-1" id="row-total-deductions" style="border-color: var(--border-color) !important;">
+                        <span data-i18n="p_tot_ded">TOTAL DEDUCTIONS</span> <span class="text-danger-custom" id="res-total-deductions">-$0.00</span>
+                    </li>
+                </ul>
+                
+                <!-- Final Cinematic Value -->
+                <div class="mt-4 pt-2">
+                    <h6 class="mb-1 fw-bold text-muted text-uppercase" style="letter-spacing: 1px;" data-i18n="p_final_net">Final Net Pay</h6>
+                    <h1 class="mb-0 text-gradient" id="res-net" style="font-size: 3.5rem;">$0.00</h1>
+                </div>
+
+                <!-- Employer Info Block -->
+                <div class="mt-5 p-3 rounded text-muted" style="background-color: var(--bg-color); font-size: 0.85rem; border: 1px dashed var(--border-color);">
+                    <h6 class="fw-bold mb-2"><i class="fas fa-building"></i> <span data-i18n="p_emp_cont">Employer Contributions (Info)</span></h6>
+                    <div class="d-flex justify-content-between mb-1" id="row-isss-emp">
+                        <span>ISSS Patronal (7.5%)</span>
+                        <span id="res-isss-emp">$0.00</span>
+                    </div>
+                    <div class="d-flex justify-content-between" id="row-afp-emp">
+                        <span>AFP Patronal (8.75%)</span>
+                        <span id="res-afp-emp">$0.00</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 3: ISOLATED ANNUAL BENEFITS CARD -->
+    <!-- Segregated from the Official Payslip to preserve Quincena math integrity -->
+    <div class="card border-0 mb-4" id="annual-panel" style="display: none;">
+        <div class="card-body p-4 p-xl-5">
+            <h4 class="fw-bold mb-4"><i class="fas fa-gift me-2" style="color: var(--highlight);"></i> <span data-i18n="t_annual_out">Annual Benefits</span></h4>
+            
+            <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom" style="border-color: var(--border-color) !important;">
+                <div>
+                    <span class="d-block fw-bold" data-i18n="p_vac_bonus">Vacation Bonus</span>
+                    <span class="small text-muted" id="res-vac-detail">30%</span>
+                </div>
+                <h4 class="mb-0 text-success-custom" id="res-vac-bonus">+$0.00</h4>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <span class="d-block fw-bold" data-i18n="p_agui">Christmas Bonus</span>
+                    <span class="small text-muted" id="res-agui-detail">15 Days Salary</span>
+                </div>
+                <h4 class="mb-0 text-success-custom" id="res-agui">+$0.00</h4>
+            </div>
+
+            <div class="p-3 rounded" style="background-color: rgba(0, 191, 165, 0.05); border: 1px dashed rgba(0, 191, 165, 0.3);">
+                <p class="small text-muted mb-0" style="line-height: 1.5; font-size: 0.8rem;" data-i18n="p_annual_disc">
+                    <i class="fas fa-info-circle me-1" style="color: var(--highlight);"></i> These annual payments are <strong>not</strong> included in the 15-day Net Pay above. Vacation bonuses are exempt from statutory deductions.
+                </p>
+            </div>
+        </div>
+    </div>
+
+</div> 

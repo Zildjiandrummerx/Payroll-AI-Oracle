@@ -1,0 +1,214 @@
+<!-- 
+  ==============================================================================
+  COLUMN 1: THE INPUT ENGINE
+  ==============================================================================
+  Handles all user data ingestion. Bound directly to the #calc-form DOM element.
+  This component is heavily reliant on data-i18n attributes for instant translation
+  and uses responsive Bootstrap breakpoints (e.g., col-sm-8) to adapt to mobile devices.
+-->
+<div class="col-xl-4 col-lg-6 col-md-12 mb-4">
+    
+    <div class="card border-0 mb-4">
+        <div class="card-body p-4 p-xl-5">
+            <h4 class="fw-bold mb-4"><i class="fas fa-calendar-alt me-2" style="color: var(--highlight);"></i> <span data-i18n="t_engine">Time & Pay Engine</span></h4>
+            
+            <form id="calc-form">
+                
+                <!-- SECTION 1: BASE FINANCIALS -->
+                <h6 class="fw-bold mb-3 mt-2 text-muted" data-i18n="t_base_fin">1. Base Financials</h6>
+                <div class="row mb-3">
+                    <div class="col-7 col-sm-8">
+                        <div class="form-outline">
+                            <input type="number" id="baseSalary" class="form-control" step="0.01" required />
+                            <label class="form-label" for="baseSalary" data-i18n="l_salary">Monthly Salary ($)</label>
+                        </div>
+                    </div>
+                    <div class="col-5 col-sm-4">
+                        <div class="form-outline">
+                            <input type="number" id="bonus" class="form-control" step="0.01" />
+                            <label class="form-label" for="bonus" data-i18n="l_bonus">Bonus ($)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 2: AUTO-SCHEDULE & TIME PHYSICS -->
+                <!-- Bound to Flatpickr via ui.js. Includes hidden divs for dynamic shift warnings. -->
+                <h6 class="fw-bold mb-3 mt-4 text-muted" data-i18n="t_auto_sched">2. Auto-Schedule</h6>
+                <div class="form-outline">
+                    <input type="date" id="startDate" class="form-control" required />
+                    <label class="form-label" for="startDate" data-i18n="l_start">Semi-Monthly Start Date</label>
+                </div>
+                <div class="form-helper text-muted mt-2 mb-4" style="font-size: 0.80rem;">
+                    <i class="fas fa-info-circle" style="color: var(--highlight);"></i> <span data-i18n="h_scan">Engine automatically scans 15 days for SV Holidays.</span>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col">
+                        <label class="small text-muted fw-bold mb-1" data-i18n="l_std_in">Standard In</label>
+                        <input type="time" id="shiftIn" class="form-control px-3" value="10:00" required />
+                    </div>
+                    <div class="col">
+                        <label class="small text-muted fw-bold mb-1" data-i18n="l_std_out">Standard Out</label>
+                        <input type="time" id="shiftOut" class="form-control px-3" value="20:00" required />
+                    </div>
+                    <!-- Dynamic Soft Warning: Fires if shift > 10 hours -->
+                    <div class="col-12 mt-2" id="warning-std-shift" style="display: none;">
+                        <span class="small fw-bold" style="color: var(--warning-text);"><i class="fas fa-exclamation-triangle me-1"></i> <span data-i18n="w_shift_10">Warning: Shift exceeds 10 hours. Ensure this is correct.</span></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3 p-3 rounded" style="background-color: var(--bg-color); border: 1px solid var(--border-color);">
+                    <div class="col-12 mb-3">
+                        <label class="small text-muted fw-bold mb-1" data-i18n="l_short_day">Short Day</label>
+                        <select id="shortDay" class="form-select">
+                            <option value="-1" data-i18n="day_none">None / N/A</option>
+                            <option value="0" data-i18n="day_m">Monday</option>
+                            <option value="1" data-i18n="day_t">Tuesday</option>
+                            <option value="2" data-i18n="day_w">Wednesday</option>
+                            <option value="3" data-i18n="day_th">Thursday</option>
+                            <option value="4" data-i18n="day_f" selected>Friday</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label class="small text-muted fw-bold mb-1" data-i18n="l_short_in">Short Day (In)</label>
+                        <input type="time" id="shortIn" class="form-control px-3" value="11:00" required />
+                    </div>
+                    <div class="col-6">
+                        <label class="small text-muted fw-bold mb-1" data-i18n="l_short_out">Short Day (Out)</label>
+                        <input type="time" id="shortOut" class="form-control px-3" value="20:00" required />
+                    </div>
+                    <div class="col-12 mt-2" id="warning-short-shift" style="display: none;">
+                        <span class="small fw-bold" style="color: var(--warning-text);"><i class="fas fa-exclamation-triangle me-1"></i> <span data-i18n="w_shift_10">Warning: Shift exceeds 10 hours. Ensure this is correct.</span></span>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="small text-muted fw-bold mb-2 d-block" data-i18n="l_days_off">Days Off</label>
+                    <div class="d-flex flex-wrap gap-3">
+                        <div class="form-check"><input class="form-check-input days-off" type="checkbox" value="0"> M</div>
+                        <div class="form-check"><input class="form-check-input days-off" type="checkbox" value="1"> T</div>
+                        <div class="form-check"><input class="form-check-input days-off" type="checkbox" value="2"> W</div>
+                        <div class="form-check"><input class="form-check-input days-off" type="checkbox" value="3"> Th</div>
+                        <div class="form-check"><input class="form-check-input days-off" type="checkbox" value="4"> F</div>
+                        <div class="form-check"><input class="form-check-input days-off" type="checkbox" value="5" checked> S</div>
+                        <div class="form-check"><input class="form-check-input days-off" type="checkbox" value="6" checked> Su</div>
+                    </div>
+                </div>
+
+                <!-- SECTION 3: ADVANCED EXCEPTIONS (2x2 GRID) -->
+                <!-- Implements MDB Tooltips to reduce cognitive friction on complex payroll terms -->
+                <h6 class="fw-bold mb-3 mt-4 text-muted" data-i18n="t_except">3. Exceptions & Deductions</h6>
+                <div class="row mb-1">
+                    <div class="col-6 mb-3">
+                        <div class="form-outline">
+                            <input type="number" id="otHours" class="form-control" step="0.01" />
+                            <label class="form-label" for="otHours">
+                                <span data-i18n="l_ot">Day OT (Hrs)</span>
+                                <i class="fas fa-question-circle ms-1 text-muted" data-mdb-toggle="tooltip" data-i18n-title="tt_ot" title="Extra hours worked outside your normal schedule during the day (6:00 AM - 7:00 PM). Pays double."></i>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <div class="form-outline">
+                            <input type="number" id="nightOtHours" class="form-control" step="0.01" />
+                            <label class="form-label" for="nightOtHours">
+                                <span data-i18n="l_night_ot">Night OT (Hrs)</span>
+                                <i class="fas fa-question-circle ms-1 text-muted" data-mdb-toggle="tooltip" data-i18n-title="tt_night_ot" title="Extra hours worked outside your normal schedule during the night (7:00 PM - 6:00 AM). Pays 250%."></i>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <div class="form-outline">
+                            <input type="number" id="lateHours" class="form-control" step="0.01" />
+                            <label class="form-label" for="lateHours" data-i18n="l_late">Lateness (Hrs)</label>
+                        </div>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <div class="form-outline">
+                            <input type="text" id="customDeductions" class="form-control" data-i18n-ph="p_deduct" placeholder="e.g. 110.50 + 8.45" pattern="^[0-9.,+\s]*$" />
+                            <label class="form-label" for="customDeductions" data-i18n="l_other_ded">Other Deduct ($)</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-helper text-muted mb-4" style="font-size: 0.80rem; line-height: 1.4;">
+                    <i class="fas fa-lightbulb text-warning"></i> <span data-i18n="h_tip">Tip: You can type multiple deductions like <strong>3.43 + 5</strong></span>
+                </div>
+
+                <!-- SECTION 4: STATUTORY TOGGLES -->
+                <div class="mb-4 p-3 rounded" style="background-color: var(--bg-color); border: 1px solid var(--border-color);">
+                    <h6 class="fw-bold mb-3" data-i18n="t_stat">Statutory Config</h6>
+                    <div class="d-flex flex-wrap justify-content-between gap-3 mb-3">
+                        <div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="toggleISSS" checked /><label class="form-check-label">ISSS</label></div>
+                        <div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="toggleAFP" checked /><label class="form-check-label">AFP</label></div>
+                        <div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="toggleVialidad" /><label class="form-check-label" data-i18n="l_vialidad">Municipal Tax (Vialidad)</label></div>
+                    </div>
+                    <div class="d-flex justify-content-between border-top pt-3 mt-1" style="border-color: var(--border-color) !important;">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="toggleNight" />
+                            <label class="form-check-label" for="toggleNight">
+                                <span data-i18n="l_night">Apply Standard Night Shift (25%)</span>
+                                <i class="fas fa-question-circle ms-1 text-muted" data-mdb-toggle="tooltip" data-i18n-title="tt_night" style="pointer-events: auto; cursor: help; position: relative; z-index: 10;"></i>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 5: ANNUAL BENEFITS -->
+                <!-- The 'daysWorkedContainer' is dynamically triggered by ui.js -->
+                <h6 class="fw-bold mb-3 mt-4 text-muted" data-i18n="t_annual">4. Annual Benefits (Optional)</h6>
+                <div class="row mb-4">
+                    <div class="col-12 mb-3">
+                        <label class="small text-muted fw-bold mb-1" data-i18n="l_seniority">Time with Employer</label>
+                        <select id="seniority" class="form-select">
+                            <option value="-1" data-i18n="sen_none" selected>Do not calculate</option>
+                            <option value="0" data-i18n="sen_1">Less than 1 Year</option>
+                            <option value="1" data-i18n="sen_3">1 to 3 Years</option>
+                            <option value="2" data-i18n="sen_10">3 to 10 Years</option>
+                            <option value="3" data-i18n="sen_plus">More than 10 Years</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-12 mb-3" id="daysWorkedContainer" style="display: none;">
+                        <div class="form-outline">
+                            <input type="number" id="daysWorked" class="form-control" min="1" max="364" />
+                            <label class="form-label" for="daysWorked" data-i18n="l_days_worked">Days Worked (For Proportional Aguinaldo)</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-outline">
+                            <input type="number" id="vacationPercent" class="form-control" step="1" value="30" />
+                            <label class="form-label" for="vacationPercent" data-i18n="l_vac_percent">Company Vacation Bonus (%)</label>
+                        </div>
+                        <div class="form-helper text-muted mt-2" style="font-size: 0.80rem;">
+                            <i class="fas fa-info-circle" style="color: var(--highlight);"></i> <span data-i18n="h_vac_law">By law, this is 30% of a 15-day salary. Change only if your company offers more.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 6: ACTION BUTTONS -->
+                <div class="d-flex gap-3 mt-4">
+                    <button type="submit" class="btn btn-brand btn-lg flex-grow-1 py-3 text-uppercase">
+                        <i class="fas fa-bolt me-2"></i> <span data-i18n="btn_calc">Calculate</span>
+                    </button>
+                    <!-- Triggers the DOM Wipe Engine in main.js -->
+                    <button type="button" id="btn-reset" class="btn btn-outline-danger btn-lg px-4 py-3" title="Clear & Reset" style="border-width: 2px; border-radius: 8px;">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- SECTION 7: PDF EXPORT ENGINE -->
+    <!-- Intercepted by @media print CSS rules to format the output -->
+    <div class="card border-0 mt-4">
+        <div class="card-body p-4 text-center">
+            <h6 class="fw-bold mb-3" data-i18n="t_export">Export & Save</h6>
+            <button type="button" id="btn-print" class="btn btn-outline-info btn-lg w-100" style="border-width: 2px;">
+                <i class="fas fa-file-pdf me-2"></i> <span data-i18n="btn_print">Print Official Payslip</span>
+            </button>
+        </div>
+    </div>
+
+</div> 

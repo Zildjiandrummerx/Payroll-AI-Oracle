@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- 
+  ==============================================================================
+  MASTER ORCHESTRATOR GRID
+  ==============================================================================
+  Utilizes Bootstrap 5 Flexbox grid system. 'align-items-stretch' ensures that 
+  if one column grows (e.g., the Payslip expands), the other columns maintain 
+  visual symmetry along the horizontal axis. 
+  
+  The UI is fractured into 3 Jinja2 Partials to enforce Separation of Concerns (SoC).
+-->
+<div class="row align-items-stretch">
+    
+    <!-- INJECT COLUMN 1: Data Ingestion & Mathematical Parameters -->
+    {% include 'components/_col1_inputs.html' %}
+    
+    <!-- INJECT COLUMN 2: Dynamic JSON Payload Rendering & Output -->
+    {% include 'components/_col2_payslip.html' %}
+    
+    <!-- INJECT COLUMN 3: ML Forecasting, Compliance, & Virality Engine -->
+    {% include 'components/_col3_sidebar.html' %}
+
+</div>
+{% endblock %}

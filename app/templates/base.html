@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>YotchApps | SV Payroll</title>
+    
+    <!-- External Dependencies -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    
+    <!-- ========================================== -->
+    <!-- THE YOTCHAPPS MASTER CSS MATRIX            -->
+    <!-- ========================================== -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <!-- THE SAKURA CONTAINER (Activated dynamically by theme.js) -->
+    <div id="sakura-container" style="pointer-events: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; overflow: hidden;"></div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar shadow-sm mb-5" style="background-color: var(--card-bg);">
+        <div class="container-fluid px-3 px-xl-5 d-flex justify-content-between align-items-center flex-nowrap">
+            
+            <a class="navbar-brand fw-bold text-truncate me-2 fs-6 fs-sm-5" style="color: var(--text-color);" href="/">
+                <i class="fas fa-wallet me-1" style="color: var(--highlight);"></i> <span data-i18n="nav_title">YotchApps | SV Payroll</span>
+            </a>
+            
+            <div class="d-flex gap-2 flex-shrink-0">
+                <!-- THE OMNI-THEME HOVER DROPDOWN -->
+                <div class="dropdown theme-dropdown">
+                    <button class="btn btn-sm text-white fw-bold px-3 py-2 dropdown-toggle" type="button" id="theme-toggle" aria-expanded="false" style="background: var(--card-bg); border: 2px solid var(--border-color); color: var(--text-color) !important;" title="Select Theme">
+                        <i id="theme-icon" class="fas fa-moon" style="color: var(--highlight);"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="theme-toggle" style="background-color: var(--card-bg); border: 1px solid var(--border-color); min-width: 150px;">
+                        <li><a class="dropdown-item theme-select py-2" href="#" data-theme-id="0" style="color: var(--text-color);"><i class="fas fa-moon me-2" style="color: #00ff87;"></i> <span data-i18n="theme_dark">Dark</span></a></li>
+                        <li><a class="dropdown-item theme-select py-2" href="#" data-theme-id="1" style="color: var(--text-color);"><i class="fas fa-desktop me-2" style="color: #0284c7;"></i> <span data-i18n="theme_light">Light</span></a></li>
+                        <li><a class="dropdown-item theme-select py-2" href="#" data-theme-id="2" style="color: var(--text-color);"><i class="fas fa-wine-glass me-2" style="color: #ffb7c5;"></i> <span data-i18n="theme_cherry">Cherry</span></a></li>
+                    </ul>
+                </div>
+                
+                <!-- THE i18n TRANSLATION TOGGLE -->
+                <button id="lang-toggle" class="btn btn-sm btn-outline-success text-white fw-bold px-3 py-2" style="border-color: var(--highlight); border-width: 2px; color: var(--text-color) !important;">
+                    <i class="fas fa-globe me-2" style="color: var(--highlight);"></i> <span id="lang-label" style="color: var(--text-color);">EN</span>
+                </button>
+            </div>
+            
+        </div>
+    </nav>
+
+    <!-- MAIN INJECTION CONTAINER -->
+    <!-- The content from index.html gets safely injected here by Jinja2 -->
+    <div class="container-fluid px-4 px-xl-5">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- MDB & Logic Engines -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script type="module" src="/static/main.js"></script>
+</body>
+</html>

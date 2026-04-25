@@ -1,0 +1,156 @@
+<!-- 
+  ==============================================================================
+  COLUMN 3: FORECASTS, COMPLIANCE, & VIRALITY
+  ==============================================================================
+  This component acts as the right-anchor for the application. It receives DOM 
+  injections from the Machine Learning forecasting engine, handles complex 
+  legal compliance text via MDB Accordions, and houses the WhatsApp sharing API.
+-->
+<div class="col-xl-4 col-lg-12 col-md-12 mb-4">
+    
+    <!-- SECTION 1: MACHINE LEARNING FORECASTS -->
+    <!-- The DOM Container (#forecast-container) is dynamically populated by main.js -->
+    <div class="card border-0 mb-4" id="forecast-panel" style="display: none;">
+        <div class="card-body p-4 p-xl-5">
+            <h4 class="fw-bold mb-2"><i class="fas fa-chart-line me-2" style="color: var(--highlight);"></i> <span data-i18n="f_title">Financial Horizon</span></h4>
+            <p class="small text-muted mb-4" style="line-height: 1.5; font-size: 0.85rem;">
+                <em data-i18n="f_desc">Projections based on statutory holiday analysis and behavioral modeling. Actual payout may vary.</em>
+            </p>
+            <div id="forecast-container" class="d-flex flex-column gap-3"></div>
+        </div>
+    </div>
+
+    <!-- SECTION 2: THE LEGAL GUIDE (COMPLIANCE) -->
+    <!-- Uses MDB Accordion mechanics to compress massive amounts of text data -->
+    <div class="card border-0 mb-4">
+        <div class="card-body p-4 p-xl-5">
+            <h4 class="fw-bold mb-4"><i class="fas fa-book-open me-2" style="color: var(--highlight);"></i> <span data-i18n="lg_title">Legal Guide</span></h4>
+            
+            <div class="accordion accordion-borderless" id="legalAccordion">
+                
+                <!-- Accordion: Deductions -->
+                <div class="accordion-item mb-3 border-0">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button collapsed fw-bold" type="button" data-mdb-toggle="collapse" data-mdb-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" style="color: var(--highlight);">
+                            <span data-i18n="lg_ded">Mandatory Deductions</span>
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-mdb-parent="#legalAccordion">
+                        <div class="accordion-body text-muted pt-3 pb-2" style="font-size: 0.90rem; line-height: 1.6;">
+                            <p class="mb-3" data-i18n="lg_afp"><strong>AFP (7.25%):</strong> Your contribution to your pension fund. Your employer also contributes an additional 8.75% on your behalf.</p>
+                            <p class="mb-2" data-i18n="lg_isss"><strong>ISSS (3%):</strong> Social Security deduction, capped at a maximum of $30.00 monthly. Employer pays an additional 7.5%.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion: Holidays -->
+                <div class="accordion-item mb-3 border-0">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed fw-bold" type="button" data-mdb-toggle="collapse" data-mdb-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="color: var(--highlight);">
+                            <span data-i18n="lg_hol">Mandatory Holidays</span>
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-mdb-parent="#legalAccordion">
+                        <div class="accordion-body text-muted pt-3 pb-2" style="font-size: 0.90rem; line-height: 1.6;">
+                            <p class="mb-2" data-i18n="lg_hol_desc">Employees working on a mandatory holiday earn double their standard salary for that day.</p>
+                            <ul class="mb-2">
+                                <li data-i18n="h1">January 1st (New Year)</li>
+                                <li data-i18n="h2">Holy Thursday, Friday, and Saturday (Easter)</li>
+                                <li data-i18n="h3">May 1st (Labor Day)</li>
+                                <li data-i18n="h4">May 10th (Mother's Day)</li>
+                                <li data-i18n="h5">June 17th (Father's Day)</li>
+                                <li data-i18n="h6">August 6th (El Salvador del Mundo)</li>
+                                <li data-i18n="h7">September 15th (Independence Day)</li>
+                                <li data-i18n="h8">November 2nd (All Souls' Day)</li>
+                                <li data-i18n="h9">December 25th (Christmas)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion: Annual Bonuses -->
+                <div class="accordion-item border-0">
+                    <h2 class="accordion-header" id="headingThree">
+                        <button class="accordion-button collapsed fw-bold" type="button" data-mdb-toggle="collapse" data-mdb-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="color: var(--highlight);">
+                            <span data-i18n="lg_bonuses">Annual Bonuses</span>
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-mdb-parent="#legalAccordion">
+                        <div class="accordion-body text-muted pt-3 pb-2" style="font-size: 0.90rem; line-height: 1.6;">
+                            <p class="mb-3" data-i18n="lg_14"><strong>14th Month:</strong> Paid Jan 15-25. Equivalent to 50% of your monthly salary. Exempt from ISR, ISSS, and AFP.</p>
+                            <p class="mb-3" data-i18n="lg_vac"><strong>Vacation Bonus:</strong> Corresponds to 30% of a 15-day salary. Not subject to statutory deductions.</p>
+                            <p class="mb-1" data-i18n="lg_agui"><strong>Aguinaldo (Christmas Bonus):</strong> Must be paid by Dec 20th. Based on years of service:</p>
+                            <ul class="mb-2">
+                                <li data-i18n="a1">1 to 3 years: Equivalent to 15 days salary.</li>
+                                <li data-i18n="a2">3 to 10 years: Equivalent to 19 days salary.</li>
+                                <li data-i18n="a3">10+ years: Equivalent to 21 days salary.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LIABILITY DISCLAIMER & EXTERNAL SOURCES -->
+            <div class="mt-5 p-4 rounded" style="background-color: var(--bg-color); border: 1px solid var(--border-color);">
+                <h6 class="fw-bold mb-3" style="color: var(--highlight);"><i class="fas fa-landmark me-2"></i> <span data-i18n="lg_source">Official Sources</span></h6>
+                <p class="small text-muted mb-3" style="line-height: 1.5;" data-i18n="lg_tomo">Calculations based on 2026 Income Tax Retention Tables (Official Gazette Tomo 451, April 7, 2026).</p>
+                
+                <div class="d-flex flex-column gap-2 mb-4">
+                    <a href="https://www.diariooficial.gob.sv/seleccion/31733" target="_blank" class="btn btn-sm w-100 text-start shadow-0" style="background-color: var(--input-bg); color: var(--text-color) !important; border: 1px solid var(--border-color);">
+                        <i class="fas fa-file-pdf me-2" style="color: var(--highlight);"></i> <span data-i18n="btn_download">Download Official Gazette</span>
+                    </a>
+                    <a href="https://www.diariooficial.gob.sv/" target="_blank" class="btn btn-sm w-100 text-start shadow-0" style="background-color: var(--input-bg); color: var(--text-color) !important; border: 1px solid var(--border-color);">
+                        <i class="fas fa-external-link-alt me-2" style="color: var(--highlight);"></i> <span data-i18n="btn_visit">Browse Official Gazettes</span>
+                    </a>
+                </div>
+
+                <div class="p-3 rounded" style="background-color: rgba(255, 75, 75, 0.05); border: 1px solid rgba(255, 75, 75, 0.2);">
+                    <p class="small mb-0" style="color: var(--muted-color); font-size: 0.75rem; line-height: 1.4;" data-i18n="lg_disclaimer">
+                        <strong>Disclaimer:</strong> We are not affiliated with the government of El Salvador. Tax tables are subject to change. This tool does not constitute legal or financial advice and is strictly for informational purposes to estimate local employer calculations.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 3: THE VIRALITY & CONTACT FOOTER -->
+    <!-- Dynamically grabs the window URL and assigns it to the WhatsApp/Clipboard API -->
+    <div class="card border-0 mt-4">
+        <div class="card-body p-4 text-center">
+            <h6 class="fw-bold mb-3" data-i18n="t_share">Share this Tool</h6>
+            <div class="d-flex gap-2">
+                <button type="button" id="btn-copy" class="btn btn-outline-theme btn-sm flex-grow-1" style="border-width: 2px;">
+                    <i class="fas fa-link me-2"></i> <span data-i18n="btn_copy" id="text-copy">Copy Link</span>
+                </button>
+                <a href="#" id="btn-wa" target="_blank" class="btn btn-brand btn-sm flex-grow-1">
+                    <i class="fab fa-whatsapp me-2" style="font-size: 1.1rem;"></i> WhatsApp
+                </a>
+            </div>
+            
+            <hr style="border-color: var(--border-color);" class="my-3">
+            
+            <!-- THE DEVELOPER CONTACT ROW (SysAdmin Theme) -->
+            <div class="d-flex justify-content-center align-items-center gap-3">
+                <h6 class="fw-bold mb-0 text-muted" data-i18n="t_contact" style="letter-spacing: 0.5px;">
+                    Rescue Yotch from <code style="color: var(--highlight); font-family: monospace; font-size: 1.1em;">/dev/null</code>
+                </h6>
+                
+                <div class="d-flex gap-2">
+                    <a href="https://wa.me/50377864130?text=Hola%20Yotch,%20estoy%20viendo%20tu%20calculadora%20de%20planillas!" target="_blank" class="btn btn-outline-theme btn-floating shadow-0 contact-btn" title="WhatsApp Me">
+                        <i class="fab fa-whatsapp" style="font-size: 1.2rem; line-height: 2.2;"></i>
+                    </a>
+                    <a href="mailto:joshua.rg18@gmail.com" target="_blank" class="btn btn-outline-theme btn-floating shadow-0 contact-btn" title="Email Me">
+                        <i class="fas fa-envelope" style="font-size: 1.1rem; line-height: 2.2;"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/josue-ramirez-76b487161/" target="_blank" class="btn btn-outline-theme btn-floating shadow-0 contact-btn" title="LinkedIn">
+                        <i class="fab fa-linkedin-in" style="font-size: 1.1rem; line-height: 2.2;"></i>
+                    </a>
+                    <a href="https://github.com/Zildjiandrummerx" target="_blank" class="btn btn-outline-theme btn-floating shadow-0 contact-btn" title="GitHub">
+                        <i class="fab fa-github" style="font-size: 1.1rem; line-height: 2.2;"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div> 

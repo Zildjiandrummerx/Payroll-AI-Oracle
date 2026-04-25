@@ -1,0 +1,48 @@
+# ==============================================================================
+# YOTCHAPPS PAYROLL ENGINE - GIT IGNORE MANIFEST
+# ==============================================================================
+
+# ==========================================
+# 🛑 SECURITY: CRITICAL SECRETS 
+# ==========================================
+# NEVER commit deployment or push scripts if they contain personal access tokens!
+# This guarantees your GitHub token in github_push.sh is never uploaded to the web.
+github_Push.sh
+.env
+.env.local
+
+# ==========================================
+# 🐍 PYTHON & FLASK ARTIFACTS
+# ==========================================
+# Ignores compiled byte-code to keep the repository completely clean.
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ==========================================
+# 📦 VIRTUAL ENVIRONMENTS
+# ==========================================
+# Never commit local dependencies. Docker and requirements.txt handle this natively.
+venv/
+.venv/
+env/
+ENV/
+
+# ==========================================
+# 🗄️ STATELESS DATA & LOGS
+# ==========================================
+# YotchApps is a stateless engine, but we block default Flask instance folders,
+# local logs, and rogue SQLite files just in case of future local testing.
+instance/
+*.db
+*.sqlite3
+*.log
+
+# ==========================================
+# 💻 OS & IDE JUNK FILES
+# ==========================================
+# Keeps Mac/Windows hidden system files and IDE configurations out of the codebase.
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

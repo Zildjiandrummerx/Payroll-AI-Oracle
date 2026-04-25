@@ -1,0 +1,229 @@
+/**
+ * ============================================================================
+ * YOTCHAPPS PAYROLL ENGINE - MASTER CSS MATRIX
+ * ============================================================================
+ * This file contains the Omni-Theme Engine, Sakura Particle Physics, and 
+ * the highly compressed Print Media Query for PDF generation.
+ * ============================================================================
+ */
+
+/* ==========================================
+   1. THE OMNI-THEME ENGINE (CSS Variables)
+   ========================================== */
+/* DEFAULT: MANJARO DARK */
+:root {
+    color-scheme: dark; 
+    --bg-color: #121417;
+    --text-color: #f8f9fa;        
+    --card-bg: #1a1c21;
+    --border-color: #2b2e36;
+    --muted-color: #9ba1a8;       
+    --input-bg: #22252b;          
+    --input-border: #444a57;
+    --highlight: #00ff87; 
+    --mid-green: #00bfa5; 
+    --brand-gradient: linear-gradient(135deg, #00ff87 0%, #00bfa5 100%);
+    --brand-text: #051911;
+    --forecast-text: var(--text-color);
+    --baseline-bar: #9ba1a8; /* TRUE GRAY */
+    --warning-text: #fdbb2d; /* Yellow */
+}
+
+/* THEME 2: ARCH LIGHT (Eye-Safe Ice & Blue) */
+[data-theme="arch"] {
+    color-scheme: light; 
+    --bg-color: #dbeafe; 
+    --text-color: #1e293b;        
+    --card-bg: #ffffff; 
+    --border-color: #cbd5e1;
+    --muted-color: #64748b;       
+    --input-bg: #f8fafc;          
+    --input-border: #94a3b8;
+    --highlight: #0284c7; /* Arch Blue */
+    --mid-green: #38bdf8; 
+    --brand-gradient: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+    --brand-text: #ffffff;
+    --forecast-text: var(--highlight);
+    --baseline-bar: #64748b; /* SLATE GRAY */
+    --warning-text: var(--highlight); 
+}
+
+/* THEME 3: CHERRY WINE (Velvet & Sakura) */
+[data-theme="cherry"] {
+    color-scheme: dark; 
+    --bg-color: #2a111a; 
+    --text-color: #fde8ed;      
+    --card-bg: #3d1a25; 
+    --border-color: #5c2a3d;
+    --muted-color: #d49ba8;       
+    --input-bg: #4a2230;          
+    --input-border: #6e354a;
+    --highlight: #ffb7c5; /* Sakura Pink */
+    --mid-green: #e65c7b; 
+    --brand-gradient: linear-gradient(135deg, #ffb7c5 0%, #e65c7b 100%);
+    --brand-text: #2a111a;
+    --forecast-text: var(--highlight);
+    --baseline-bar: #9ba1a8; /* TRUE GRAY */
+    --warning-text: #fdbb2d; 
+}
+
+/* ==========================================
+   2. GLOBAL PHYSICS & TRANSITIONS
+   ========================================== */
+body, .card, .accordion-item, .accordion-button, input, select, .form-control, .list-group-item {
+    transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease !important;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Roboto', sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+.card, .accordion-item, .accordion-button {
+    background-color: var(--card-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 16px !important;
+    color: var(--text-color) !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+}
+
+.list-group-item { color: var(--text-color) !important; }
+.text-muted { color: var(--muted-color) !important; }
+
+/* ==========================================
+   3. VIBRANT UI COMPONENTS
+   ========================================== */
+.text-success-custom { color: var(--highlight) !important; font-weight: bold; }
+.text-danger-custom { color: #ff4b4b !important; font-weight: bold; }
+.text-warning-custom { color: #fdbb2d !important; font-weight: bold; }
+
+.btn-brand {
+    background: var(--brand-gradient) !important;
+    color: var(--brand-text) !important;
+    border: none !important;
+    border-radius: 8px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(0,0,0, 0.2) !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.btn-brand:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0, 0.3) !important; }
+
+.text-gradient {
+    background: var(--brand-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 900;
+}
+
+/* ==========================================
+   4. FORM CHECKBOXES (THE NAPALM FIX)
+   ========================================== */
+.form-check:not(.form-switch) .form-check-input[type="checkbox"] {
+    background: var(--input-bg) !important; background-color: var(--input-bg) !important; border-color: var(--input-border) !important;
+}
+.form-check:not(.form-switch) .form-check-input[type="checkbox"]:focus:not(:checked) {
+    background: var(--input-bg) !important; background-color: var(--input-bg) !important; background-image: none !important;
+    border-color: var(--mid-green) !important; box-shadow: 0 0 0 0.25rem rgba(0, 191, 165, 0.25) !important; outline: none !important;
+}
+.form-check:not(.form-switch) .form-check-input[type="checkbox"]:checked {
+    background: var(--mid-green) !important; background-color: var(--mid-green) !important; border-color: var(--mid-green) !important;
+}
+.form-check:not(.form-switch) .form-check-input[type="checkbox"]::before, .form-check:not(.form-switch) .form-check-input[type="checkbox"]::after { display: none !important; }
+.form-switch .form-check-input[type="checkbox"]:not(:checked) { background-color: var(--border-color) !important; border-color: var(--input-border) !important; }
+.form-switch .form-check-input[type="checkbox"]:not(:checked):focus { box-shadow: 0 0 0 0.25rem rgba(0, 191, 165, 0.25) !important; }
+.form-switch .form-check-input:checked[type=checkbox]:after { background-color: var(--highlight) !important; }
+.form-check-input:checked { background-color: var(--mid-green) !important; border-color: var(--mid-green) !important; }
+
+/* ==========================================
+   5. FLATPICKR OVERRIDES
+   ========================================== */
+.flatpickr-calendar { background: var(--card-bg) !important; border: 1px solid var(--border-color) !important; box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important; }
+.flatpickr-day { color: var(--text-color) !important; }
+.flatpickr-day.flatpickr-disabled, .flatpickr-day.nextMonthDay, .flatpickr-day.prevMonthDay { color: var(--muted-color) !important; opacity: 0.4; }
+.flatpickr-day:hover, .flatpickr-day:focus { background: var(--input-bg) !important; border-color: var(--highlight) !important; color: var(--highlight) !important; }
+.flatpickr-day.selected { background: var(--mid-green) !important; color: var(--card-bg) !important; border-color: var(--mid-green) !important; font-weight: bold; }
+.flatpickr-months .flatpickr-month { color: var(--text-color) !important; fill: var(--text-color) !important; }
+.flatpickr-current-month .flatpickr-monthDropdown-months { background: var(--card-bg) !important; color: var(--text-color) !important; }
+span.flatpickr-weekday { color: var(--highlight) !important; font-weight: bold; }
+.flatpickr-prev-month svg, .flatpickr-next-month svg { fill: var(--highlight) !important; }
+.flatpickr-time input, .flatpickr-time .flatpickr-am-pm { color: var(--text-color) !important; }
+.flatpickr-time input:hover, .flatpickr-time .flatpickr-am-pm:hover, .flatpickr-time input:focus { background: var(--input-bg) !important; }
+.numInputWrapper span.arrowUp:after { border-bottom-color: var(--highlight) !important; }
+.numInputWrapper span.arrowDown:after { border-top-color: var(--highlight) !important; }
+
+/* ==========================================
+   6. NATIVE INPUT FIELDS & MDB NOTCHES
+   ========================================== */
+.form-control { background-color: var(--input-bg) !important; color: var(--text-color) !important; box-shadow: none !important; }
+.form-control:focus { background-color: var(--input-bg) !important; color: var(--text-color) !important; box-shadow: none !important; }
+.form-select { background-color: var(--input-bg) !important; color: var(--text-color) !important; border: 1px solid var(--input-border) !important; }
+.form-select:focus { border-color: var(--mid-green) !important; box-shadow: inset 0 0 0 1px var(--mid-green) !important; }
+select option { background-color: var(--input-bg); color: var(--text-color); }
+.form-label { color: var(--muted-color) !important; }
+::-webkit-calendar-picker-indicator { filter: invert(0.7) sepia(1) saturate(5) hue-rotate(100deg) brightness(1.1); cursor: pointer; }
+input:-webkit-autofill { -webkit-box-shadow: 0 0 0 30px var(--input-bg) inset !important; -webkit-text-fill-color: var(--text-color) !important; transition: background-color 5000s ease-in-out 0s; }
+
+.form-outline .form-notch .form-notch-leading, .form-outline .form-notch .form-notch-trailing, .form-outline .form-notch .form-notch-middle { border-color: var(--input-border) !important; transition: all 0.2s ease; }
+.form-outline .form-control:focus ~ .form-notch .form-notch-leading { border-color: var(--mid-green) !important; box-shadow: -1px 0 0 0 var(--mid-green), 0 1px 0 0 var(--mid-green), 0 -1px 0 0 var(--mid-green) !important; }
+.form-outline .form-control:focus ~ .form-notch .form-notch-trailing { border-color: var(--mid-green) !important; box-shadow: 1px 0 0 0 var(--mid-green), 0 -1px 0 0 var(--mid-green), 0 1px 0 0 var(--mid-green) !important; }
+.form-outline .form-control:focus ~ .form-notch .form-notch-middle { border-color: var(--mid-green) !important; box-shadow: 0 1px 0 0 var(--mid-green) !important; }
+.form-outline .form-control:focus ~ .form-notch .form-notch-middle, .form-outline .form-control.active ~ .form-notch .form-notch-middle { border-top: none !important; border-top-color: transparent !important; }
+input.flatpickr-input[readonly] { color: var(--text-color) !important; background-color: var(--input-bg) !important; -webkit-text-fill-color: var(--text-color) !important; opacity: 1 !important; }
+
+/* ==========================================
+   7. SAKURA FALLING PHYSICS (CHERRY MODE)
+   ========================================== */
+.petal {
+    position: absolute;
+    background-color: var(--highlight);
+    border-radius: 15px 0 15px 0;
+    opacity: 0.8;
+    animation: fall linear infinite, sway ease-in-out infinite alternate;
+}
+@keyframes fall { 0% { top: -10%; transform: rotate(0deg); } 100% { top: 110%; transform: rotate(360deg); } }
+@keyframes sway { 0% { margin-left: 0px; } 100% { margin-left: 50px; } }
+
+/* ==========================================
+   8. THEME HOVER MENU PHYSICS
+   ========================================== */
+.theme-dropdown { position: relative; }
+.theme-dropdown:hover .dropdown-menu {
+    display: block !important; position: absolute !important; top: 100% !important; right: 0 !important; left: auto !important;
+    transform: none !important; margin-top: 0; animation: fadeIn 0.2s ease;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+.dropdown-item:hover, .dropdown-item:focus, .dropdown-item:active, .dropdown-item.active { background-color: var(--input-bg) !important; color: var(--text-color) !important; }
+
+/* ==========================================
+   9. DYNAMIC THEME BUTTONS & ANIMATIONS
+   ========================================== */
+.btn-outline-theme {
+    color: var(--highlight) !important; border: 2px solid var(--highlight) !important; background-color: transparent !important; transition: all 0.2s ease;
+}
+.btn-outline-theme:hover { background-color: var(--highlight) !important; color: var(--bg-color) !important; }
+.btn-theme { background-color: var(--highlight) !important; color: var(--bg-color) !important; border: 2px solid var(--highlight) !important; }
+.contact-btn { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.contact-btn:hover { transform: translateY(-4px); box-shadow: 0 8px 15px rgba(0,0,0,0.2) !important; }
+
+/* ==========================================
+   10. THE PROFESSIONAL PDF EXPORT ENGINE
+   ========================================== */
+@media print {
+    @page { margin: 0.5in; size: letter portrait; }
+    body { background-color: white !important; }
+    nav, #calc-form, .col-xl-4:nth-child(1), .col-xl-4:nth-child(3), #rates-panel, #annual-panel, #empty-state, button, .fas.fa-robot, #btn-print { display: none !important; }
+    .col-xl-4:nth-child(2) { width: 100% !important; max-width: 100% !important; flex: 0 0 100% !important; margin: 0 !important; }
+    .card { border: none !important; box-shadow: none !important; background: white !important; }
+    .card-body { padding: 0 !important; }
+    * { color: black !important; text-shadow: none !important; -webkit-text-fill-color: black !important; }
+    .text-muted { color: #444 !important; }
+    .text-success-custom, .text-danger-custom, .text-warning-custom { font-weight: bold !important; }
+    .list-group-item { padding: 0.35rem 0 !important; border-bottom: 1px solid #ddd !important; background: transparent !important; }
+    h4.fw-bold { border-bottom: 2px solid black; padding-bottom: 10px; margin-bottom: 15px !important; }
+    div[style*="rgba(0, 255, 135, 0.05)"] { border: none !important; background: transparent !important; padding: 0 !important; margin-bottom: 15px !important; border-bottom: 1px dashed #aaa !important; }
+    .mt-5 { margin-top: 1.5rem !important; }
+}
