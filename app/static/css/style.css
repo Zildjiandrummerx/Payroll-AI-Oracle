@@ -26,7 +26,13 @@
     --brand-text: #051911;
     --forecast-text: var(--text-color);
     --baseline-bar: #9ba1a8; /* TRUE GRAY */
+    
+    /* Dynamic Box Tints (Dark Mode) */
+    --info-bg: rgba(0, 255, 135, 0.05); /* Green Tint */
+    --info-border: rgba(0, 255, 135, 0.2);
     --warning-text: #fdbb2d; /* Yellow */
+    --warning-bg: rgba(253, 187, 45, 0.05); /* Yellow Tint */
+    --warning-border: rgba(253, 187, 45, 0.2);
 }
 
 /* THEME 2: ARCH LIGHT (Eye-Safe Ice & Blue) */
@@ -45,7 +51,13 @@
     --brand-text: #ffffff;
     --forecast-text: var(--highlight);
     --baseline-bar: #64748b; /* SLATE GRAY */
-    --warning-text: var(--highlight); 
+    
+    /* Dynamic Box Tints (Light Mode) */
+    --info-bg: rgba(2, 132, 199, 0.05); /* Blue Tint */
+    --info-border: rgba(2, 132, 199, 0.2);
+    --warning-text: var(--highlight); /* Blue */
+    --warning-bg: rgba(2, 132, 199, 0.05); /* Blue Tint */
+    --warning-border: rgba(2, 132, 199, 0.2);
 }
 
 /* THEME 3: CHERRY WINE (Velvet & Sakura) */
@@ -64,7 +76,13 @@
     --brand-text: #2a111a;
     --forecast-text: var(--highlight);
     --baseline-bar: #9ba1a8; /* TRUE GRAY */
-    --warning-text: #fdbb2d; 
+    
+    /* Dynamic Box Tints (Cherry Mode) */
+    --info-bg: rgba(255, 183, 197, 0.05); /* Pink Tint */
+    --info-border: rgba(255, 183, 197, 0.2);
+    --warning-text: var(--highlight); /* Pink */
+    --warning-bg: rgba(255, 183, 197, 0.05); /* Pink Tint */
+    --warning-border: rgba(255, 183, 197, 0.2);
 }
 
 /* ==========================================
@@ -97,7 +115,7 @@ body {
    ========================================== */
 .text-success-custom { color: var(--highlight) !important; font-weight: bold; }
 .text-danger-custom { color: #ff4b4b !important; font-weight: bold; }
-.text-warning-custom { color: #fdbb2d !important; font-weight: bold; }
+.text-warning-custom { color: var(--warning-text) !important; font-weight: bold; }
 
 .btn-brand {
     background: var(--brand-gradient) !important;
@@ -224,6 +242,6 @@ input.flatpickr-input[readonly] { color: var(--text-color) !important; backgroun
     .text-success-custom, .text-danger-custom, .text-warning-custom { font-weight: bold !important; }
     .list-group-item { padding: 0.35rem 0 !important; border-bottom: 1px solid #ddd !important; background: transparent !important; }
     h4.fw-bold { border-bottom: 2px solid black; padding-bottom: 10px; margin-bottom: 15px !important; }
-    div[style*="rgba(0, 255, 135, 0.05)"] { border: none !important; background: transparent !important; padding: 0 !important; margin-bottom: 15px !important; border-bottom: 1px dashed #aaa !important; }
+    .alert-box-custom { border: none !important; background: transparent !important; padding: 0 !important; margin-bottom: 15px !important; border-bottom: 1px dashed #aaa !important; }
     .mt-5 { margin-top: 1.5rem !important; }
 }

@@ -31,7 +31,10 @@ export const i18n = {
         t_except: "3. Exceptions & Deductions", l_ot: "Total Overtime (Hrs)", l_late: "Lateness (Hrs)",
         l_other_ded: "Other Deduct ($)", h_tip: "Tip: You can type multiple deductions like <strong>3.43 + 5</strong>",
         t_stat: "Statutory Config", l_night: "Apply Standard Night Shift (25%)", l_vialidad: "Municipal Tax", btn_calc: "Calculate",
-        t_est_disc: "<i class='fas fa-exclamation-triangle me-1'></i> <strong>Estimate Only:</strong> Assumes a perfect schedule. Your actual payslip may vary.",
+        
+        // Formatted Disclaimer
+        t_est_title: "Estimate Only:", 
+        t_est_desc: "Assumes a perfect schedule. Your actual payslip may vary.",
         
         // Annual Benefits Inputs
         t_annual: "4. Annual Benefits (Optional)", l_seniority: "Time with Employer",
@@ -91,7 +94,10 @@ export const i18n = {
         t_except: "3. Excepciones y Descuentos", l_ot: "Horas Extras Totales", l_late: "Tardanzas (Hrs)",
         l_other_ded: "Otros Descuentos ($)", h_tip: "Tip: Puedes sumar descuentos así: <strong>3.43 + 5</strong>",
         t_stat: "Configuración de Ley", l_night: "Aplicar Nocturnidad Estándar (25%)", l_vialidad: "Vialidad", btn_calc: "Calcular",
-        t_est_disc: "<i class='fas fa-exclamation-triangle me-1'></i> <strong>Solo Estimación:</strong> Asume un horario perfecto. Tu boleta real puede variar.",
+        
+        // Formatted Disclaimer
+        t_est_title: "Solo Estimación:", 
+        t_est_desc: "Asume un horario perfecto. Tu boleta real puede variar.",
         
         // Phase 3: Annual Benefits Inputs
         t_annual: "4. Beneficios Anuales (Opcional)", l_seniority: "Tiempo con el Empleador",

@@ -37,17 +37,17 @@
             <div id="results-panel" style="display: none;">
                 
                 <!-- Machine Learning Auto-Detection Logs -->
-                <div class="mb-4 p-3 rounded" style="background-color: rgba(0, 255, 135, 0.05); border: 1px solid rgba(0, 255, 135, 0.2);">
+                <!-- Uses var(--info-bg) to swap colors dynamically per theme -->
+                <div class="mb-4 p-3 rounded alert-box-custom" style="background-color: var(--info-bg); border: 1px solid var(--info-border);">
                     <p class="small mb-1 fw-bold" style="color: var(--highlight);"><i class="fas fa-robot"></i> <span data-i18n="t_engine_auto">Engine Auto-Detected:</span></p>
                     <p class="small mb-0 text-muted" id="engine-logs" style="line-height: 1.4;"></p>
                 </div>
                 
                 <!-- THE ESTIMATE DISCLAIMER -->
-                <!-- Uses Omni-Theme CSS Variables for seamless Dark/Light/Cherry switching -->
-                <div class="mb-4 p-3 rounded" style="background-color: var(--warning-bg); border: 1px solid var(--warning-border);">
-                    <p class="small text-warning-custom mb-0" style="line-height: 1.4;" data-i18n="t_est_disc">
-                        <i class='fas fa-exclamation-triangle me-1'></i> <strong>Estimate Only:</strong> Assumes a perfect schedule. Your actual payslip may vary.
-                    </p>
+                <!-- Restructured to physically mirror the Engine Logs box above it -->
+                <div class="mb-4 p-3 rounded alert-box-custom" style="background-color: var(--warning-bg); border: 1px solid var(--warning-border);">
+                    <p class="small mb-1 fw-bold" style="color: var(--warning-text);"><i class="fas fa-exclamation-triangle"></i> <span data-i18n="t_est_title">Estimate Only:</span></p>
+                    <p class="small mb-0 text-muted" data-i18n="t_est_desc" style="line-height: 1.4;">Assumes a perfect schedule. Your actual payslip may vary.</p>
                 </div>
 
                 <!-- DYNAMIC LINE ITEMS -->
