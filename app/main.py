@@ -46,9 +46,8 @@ def calculate_payroll():
             'monthly_base': float(data.get('monthly_base', 0)),
             'extra_bonus': float(data.get('extra_bonus', 0)),
             
-            # 2-Tier Overtime & Exceptions (Removed Holiday OT)
+            # Exceptions (Night OT is now calculated automatically by the backend)
             'ot_hours': float(data.get('ot_hours', 0)),
-            'night_ot_hours': float(data.get('night_ot_hours', 0)),
             'late_hours': float(data.get('late_hours', 0)),
             'custom_deductions': float(data.get('custom_deductions', 0)),
             
@@ -67,7 +66,7 @@ def calculate_payroll():
             'short_out': data.get('short_out', '12:00'),
             'days_off': [int(d) for d in data.get('days_off', [5, 6])],
             
-            # Annual Benefits Matrix
+            # Phase 3: Annual Benefits Matrix
             'seniority': int(data.get('seniority', -1)),
             'days_worked': int(data.get('days_worked', 365)),
             'vac_percent': float(data.get('vac_percent', 30.0))
@@ -81,7 +80,7 @@ def calculate_payroll():
     # 2. FRONTEND BOUNDARY DEFENSE
     # ==========================================
     # Block malicious negative injections designed to reverse math logic
-    if any(val < 0 for val in [params['monthly_base'], params['extra_bonus'], params['ot_hours'], params['night_ot_hours'], params['late_hours'], params['custom_deductions']]):
+    if any(val < 0 for val in [params['monthly_base'], params['extra_bonus'], params['ot_hours'], params['late_hours'], params['custom_deductions']]):
         msg = 'Los números no pueden ser negativos. Buen intento.' if lang == 'es' else 'Numbers cannot be negative. Nice try.'
         return jsonify({'error': msg}), 400
     

@@ -54,6 +54,50 @@ def calculate_shift_hours(time_in_str, time_out_str):
     return paid_hours, paid_hours - night_hours, night_hours
 
 
+def split_ot_hours(shift_out_str, total_ot_hours):
+    """
+    ==========================================
+    AUTOMATED OT SPLITTER ENGINE
+    ==========================================
+    Takes a lump sum of Overtime and automatically splits it into Day OT (200%) 
+    and Night OT (250%). It assumes the user started their OT immediately after 
+    their standard shift ended, processing it in maximum 4-hour daily chunks.
+    """
+    fmt = "%H:%M"
+    t_out = datetime.strptime(shift_out_str, fmt)
+    
+    day_ot = 0.0
+    night_ot = 0.0
+    remaining_ot = total_ot_hours
+    
+    while remaining_ot > 0:
+        chunk = min(remaining_ot, 4.0) # Assume OT is done in max 4-hour daily increments
+        t_start = t_out
+        t_end = t_start + timedelta(hours=chunk)
+        
+        if t_start.hour < 6:
+            night_start = t_start.replace(hour=19, minute=0, second=0) - timedelta(days=1)
+        else:
+            night_start = t_start.replace(hour=19, minute=0, second=0)
+            
+        night_end = night_start + timedelta(hours=11)
+        
+        overlap_start = max(t_start, night_start)
+        overlap_end = min(t_end, night_end)
+        
+        chunk_night = 0.0
+        if overlap_start < overlap_end:
+            chunk_night = (overlap_end - overlap_start).total_seconds() / 3600.0
+            
+        chunk_day = chunk - chunk_night
+        day_ot += chunk_day
+        night_ot += chunk_night
+        
+        remaining_ot -= chunk
+        
+    return day_ot, night_ot
+
+
 def calculate_quincena(p):
     """
     ==========================================
@@ -106,9 +150,10 @@ def calculate_quincena(p):
     holiday_pay = auto_holiday_hours * (hourly_rate * 1.0) 
     holiday_night_pay = auto_holiday_night_hours * (hourly_rate * 1.5)
     
-    # The 2-Tier BPO Overtime Engine (Day 200%, Night 250%)
-    ot_pay = p.get('ot_hours', 0.0) * (hourly_rate * 2.0) 
-    night_ot_pay = p.get('night_ot_hours', 0.0) * (hourly_rate * 2.5)
+    # The Auto-Split Overtime Engine (Day 200%, Night 250%)
+    day_ot_hours, night_ot_hours = split_ot_hours(p['shift_out'], p.get('ot_hours', 0.0))
+    ot_pay = day_ot_hours * (hourly_rate * 2.0) 
+    night_ot_pay = night_ot_hours * (hourly_rate * 2.5)
     
     total_gross = max(adjusted_base + holiday_pay + holiday_night_pay + night_pay + p['extra_bonus'] + ot_pay + night_ot_pay, 0)
 

@@ -95,26 +95,14 @@
                     </div>
                 </div>
 
-                <!-- SECTION 3: ADVANCED EXCEPTIONS (2x2 GRID) -->
-                <!-- Implements MDB Tooltips to reduce cognitive friction on complex payroll terms -->
+                <!-- SECTION 3: ADVANCED EXCEPTIONS -->
+                <!-- UI Streamlined: Total OT is now split dynamically by the Python backend -->
                 <h6 class="fw-bold mb-3 mt-4 text-muted" data-i18n="t_except">3. Exceptions & Deductions</h6>
                 <div class="row mb-1">
                     <div class="col-6 mb-3">
                         <div class="form-outline">
                             <input type="number" id="otHours" class="form-control" step="0.01" />
-                            <label class="form-label" for="otHours">
-                                <span data-i18n="l_ot">Day OT (Hrs)</span>
-                                <i class="fas fa-question-circle ms-1 text-muted" data-mdb-toggle="tooltip" data-i18n-title="tt_ot" title="Extra hours worked outside your normal schedule during the day (6:00 AM - 7:00 PM). Pays double."></i>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-6 mb-3">
-                        <div class="form-outline">
-                            <input type="number" id="nightOtHours" class="form-control" step="0.01" />
-                            <label class="form-label" for="nightOtHours">
-                                <span data-i18n="l_night_ot">Night OT (Hrs)</span>
-                                <i class="fas fa-question-circle ms-1 text-muted" data-mdb-toggle="tooltip" data-i18n-title="tt_night_ot" title="Extra hours worked outside your normal schedule during the night (7:00 PM - 6:00 AM). Pays 250%."></i>
-                            </label>
+                            <label class="form-label" for="otHours" data-i18n="l_ot">Total Overtime (Hrs)</label>
                         </div>
                     </div>
                     <div class="col-6 mb-3">
@@ -123,7 +111,7 @@
                             <label class="form-label" for="lateHours" data-i18n="l_late">Lateness (Hrs)</label>
                         </div>
                     </div>
-                    <div class="col-6 mb-3">
+                    <div class="col-12 mb-3">
                         <div class="form-outline">
                             <input type="text" id="customDeductions" class="form-control" data-i18n-ph="p_deduct" placeholder="e.g. 110.50 + 8.45" pattern="^[0-9.,+\s]*$" />
                             <label class="form-label" for="customDeductions" data-i18n="l_other_ded">Other Deduct ($)</label>

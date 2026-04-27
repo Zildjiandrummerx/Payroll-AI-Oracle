@@ -153,9 +153,9 @@ document.addEventListener("DOMContentLoaded", () => {
             const rawDeductions = document.getElementById('customDeductions').value || "0";
             const customDeductions = rawDeductions.replace(/,/g, '+').split('+').map(val => parseFloat(val.trim()) || 0).reduce((a, b) => a + b, 0);
 
-            // Extract Exception Data (2-Tier Overtime & Lateness)
+            // Extract Exception Data (Unified Overtime & Lateness)
+            // Note: Night OT is now automatically split by the Python backend via the split_ot_hours engine.
             const otHours = parseFloat(document.getElementById('otHours').value || 0);
-            const nightOtHours = parseFloat(document.getElementById('nightOtHours').value || 0);
             const lateHours = parseFloat(document.getElementById('lateHours').value || 0);
             const daysOffNodes = document.querySelectorAll('.days-off:checked');
             
@@ -171,7 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const vacPercent = parseFloat(document.getElementById('vacationPercent').value || 30);
 
             // FRONTEND DEFENSE: Block negative injections before hitting the server
-            if (baseSalary < 0 || bonus < 0 || otHours < 0 || nightOtHours < 0 || lateHours < 0 || customDeductions < 0) {
+            if (baseSalary < 0 || bonus < 0 || otHours < 0 || lateHours < 0 || customDeductions < 0) {
                 alert(curLang === 'en' ? "🚫 BUSTED: Nice try. You cannot have negative money or time." : "🚫 Error: Los números no pueden ser negativos.");
                 return;
             }
@@ -180,7 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const payload = {
                 lang: curLang,
                 monthly_base: baseSalary, extra_bonus: bonus, custom_deductions: customDeductions,
-                ot_hours: otHours, night_ot_hours: nightOtHours, late_hours: lateHours, 
+                ot_hours: otHours, late_hours: lateHours, 
                 apply_isss: apply_isss, apply_afp: apply_afp, apply_vialidad: apply_vialidad, apply_night: apply_night, 
                 
                 // Schedule Variables
@@ -250,7 +250,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Execute Dynamic UI Injection
                 setDisplay('row-bonus', data.extra_bonus > 0, `+$${(data.extra_bonus || 0).toFixed(2)}`);
                 setDisplay('row-ot', data.ot_pay > 0, `+$${data.ot_pay.toFixed(2)}`);
-                setDisplay('row-night-ot', data.night_ot_pay > 0, `+$${data.night_ot_pay.toFixed(2)}`);
+                setDisplay('row-night-ot', data.night_ot_pay > 0, `+$${data.night_ot_pay.toFixed(2)}`); // Injects the Python auto-split Night OT!
                 setDisplay('row-holiday', data.holiday_pay > 0, `+$${data.holiday_pay.toFixed(2)}`);
                 setDisplay('row-hol-night', data.holiday_night_pay > 0, `+$${data.holiday_night_pay.toFixed(2)}`);
                 setDisplay('row-night', data.night_pay > 0, `+$${data.night_pay.toFixed(2)}`);

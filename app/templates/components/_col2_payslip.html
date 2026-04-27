@@ -43,9 +43,10 @@
                 </div>
                 
                 <!-- THE ESTIMATE DISCLAIMER -->
-                <div class="mb-4 p-3 rounded" style="background-color: rgba(253, 187, 45, 0.05); border: 1px solid rgba(253, 187, 45, 0.2);">
+                <!-- Uses Omni-Theme CSS Variables for seamless Dark/Light/Cherry switching -->
+                <div class="mb-4 p-3 rounded" style="background-color: var(--warning-bg); border: 1px solid var(--warning-border);">
                     <p class="small text-warning-custom mb-0" style="line-height: 1.4;" data-i18n="t_est_disc">
-                        <i class='fas fa-exclamation-triangle me-1'></i> <strong>Estimate Only:</strong> Calculations assume perfect clock-ins. Biometric payslips may vary by cents/minutes.
+                        <i class='fas fa-exclamation-triangle me-1'></i> <strong>Estimate Only:</strong> Assumes a perfect schedule. Your actual payslip may vary.
                     </p>
                 </div>
 
@@ -67,12 +68,16 @@
                     <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0 py-2" id="row-night">
                         <span data-i18n="p_night_sur">Night Shift (25%)</span> <span class="text-warning-custom" id="res-night">+$0.00</span>
                     </li>
+                    
+                    <!-- THE AUTO-SPLIT OT ROWS -->
+                    <!-- These rows automatically unhide if the Python engine detects the user's Total OT crossed the 7PM boundary -->
                     <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0 py-2" id="row-ot" style="display: none !important;">
                         <span data-i18n="p_ot">Overtime Pay (Day 200%)</span> <span class="text-success-custom" id="res-ot">+$0.00</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0 py-2" id="row-night-ot" style="display: none !important;">
                         <span data-i18n="p_night_ot">Night Overtime (250%)</span> <span class="text-success-custom" id="res-night-ot">+$0.00</span>
                     </li>
+                    
                     <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0 py-2" id="row-late">
                         <span data-i18n="p_late">Lateness Deductions</span> <span class="text-danger-custom" id="res-late">-$0.00</span>
                     </li>

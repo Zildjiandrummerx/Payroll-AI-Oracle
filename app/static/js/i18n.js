@@ -28,10 +28,10 @@ export const i18n = {
         day_m: "Monday", day_t: "Tuesday", day_w: "Wednesday", day_th: "Thursday", day_f: "Friday", l_days_off: "Days Off",
         
         // Exceptions & Statutory Config
-        t_except: "3. Exceptions & Deductions", l_ot: "Day OT (Hrs)", l_night_ot: "Night OT (Hrs)", l_late: "Lateness (Hrs)",
+        t_except: "3. Exceptions & Deductions", l_ot: "Total Overtime (Hrs)", l_late: "Lateness (Hrs)",
         l_other_ded: "Other Deduct ($)", h_tip: "Tip: You can type multiple deductions like <strong>3.43 + 5</strong>",
         t_stat: "Statutory Config", l_night: "Apply Standard Night Shift (25%)", l_vialidad: "Municipal Tax", btn_calc: "Calculate",
-        t_est_disc: "<i class='fas fa-exclamation-triangle me-1'></i> <strong>Estimate Only:</strong> Based on perfect biometric clock-ins. Final company payouts may differ.",
+        t_est_disc: "<i class='fas fa-exclamation-triangle me-1'></i> <strong>Estimate Only:</strong> Assumes a perfect schedule. Your actual payslip may vary.",
         
         // Annual Benefits Inputs
         t_annual: "4. Annual Benefits (Optional)", l_seniority: "Time with Employer",
@@ -40,8 +40,6 @@ export const i18n = {
         h_vac_law: "By law, this is 30% of a 15-day salary. Change only if your company offers more.",
         
         // Tooltips (Microcopy Context)
-        tt_ot: "Extra hours worked outside your normal schedule during the day (6:00 AM - 7:00 PM). Pays double.",
-        tt_night_ot: "Extra hours worked outside your normal schedule during the night (7:00 PM - 6:00 AM). Pays 250%.",
         tt_night: "Your normal, scheduled shift hours that happen to fall between 7:00 PM and 6:00 AM.",
 
         // The Official Payslip Output
@@ -90,10 +88,10 @@ export const i18n = {
         day_m: "Lunes", day_t: "Martes", day_w: "Miércoles", day_th: "Jueves", day_f: "Viernes", l_days_off: "Días Libres",
         
         // Exceptions & Statutory Config
-        t_except: "3. Excepciones y Descuentos", l_ot: "Extras Día (Hrs)", l_night_ot: "Extras Noche (Hrs)", l_late: "Tardanzas (Hrs)",
+        t_except: "3. Excepciones y Descuentos", l_ot: "Horas Extras Totales", l_late: "Tardanzas (Hrs)",
         l_other_ded: "Otros Descuentos ($)", h_tip: "Tip: Puedes sumar descuentos así: <strong>3.43 + 5</strong>",
         t_stat: "Configuración de Ley", l_night: "Aplicar Nocturnidad Estándar (25%)", l_vialidad: "Vialidad", btn_calc: "Calcular",
-        t_est_disc: "<i class='fas fa-exclamation-triangle me-1'></i> <strong>Estimación:</strong> Basado en marcaciones biometricas perfectas. El pago final puede variar.",
+        t_est_disc: "<i class='fas fa-exclamation-triangle me-1'></i> <strong>Solo Estimación:</strong> Asume un horario perfecto. Tu boleta real puede variar.",
         
         // Phase 3: Annual Benefits Inputs
         t_annual: "4. Beneficios Anuales (Opcional)", l_seniority: "Tiempo con el Empleador",
@@ -102,8 +100,6 @@ export const i18n = {
         h_vac_law: "Por ley, es el 30% de 15 días de salario. Cámbialo solo si tu empresa ofrece más.",
 
         // Tooltips (Microcopy Context)
-        tt_ot: "Horas extra trabajadas fuera de tu horario normal de día (6:00 AM - 7:00 PM). Se pagan doble.",
-        tt_night_ot: "Horas extra trabajadas fuera de tu horario normal de noche (7:00 PM - 6:00 AM). Se pagan al 250%.",
         tt_night: "Tus horas de turno normal y programado que caen entre las 7:00 PM y las 6:00 AM (Recargo por Nocturnidad).",
 
         // The Official Payslip Output
