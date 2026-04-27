@@ -101,18 +101,8 @@ def calculate_quincena(p):
     late_deduction = p['late_hours'] * hourly_rate
     adjusted_base = max(base_quincena - late_deduction, 0)
 
-    # THE EXACT OVERRIDE LOGIC
-    # If Exact Mode is ON, we force apply_night to True so the 25% multiplier 
-    # activates, regardless of what the toggle switch says.
-    apply_night_flag = p['apply_night']
-    if p.get('exact_mode', False):
-        auto_night_hours = p.get('exact_night_hours', 0.0)
-        auto_holiday_hours = p.get('exact_hol_hours', 0.0)
-        auto_holiday_night_hours = p.get('exact_hol_night_hours', 0.0)
-        apply_night_flag = True 
-
     # Statutory Shift Multipliers
-    night_pay = auto_night_hours * (hourly_rate * 0.25) if apply_night_flag else 0.0
+    night_pay = auto_night_hours * (hourly_rate * 0.25) if p['apply_night'] else 0.0
     holiday_pay = auto_holiday_hours * (hourly_rate * 1.0) 
     holiday_night_pay = auto_holiday_night_hours * (hourly_rate * 1.5)
     

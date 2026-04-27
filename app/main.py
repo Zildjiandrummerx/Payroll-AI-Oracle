@@ -58,12 +58,6 @@ def calculate_payroll():
             'apply_vialidad': bool(data.get('apply_vialidad', False)),
             'apply_night': bool(data.get('apply_night', False)),
             
-            # Exact Biometric Overrides
-            'exact_mode': bool(data.get('exact_mode', False)),
-            'exact_night_hours': float(data.get('exact_night_hours', 0)),
-            'exact_hol_hours': float(data.get('exact_hol_hours', 0)),
-            'exact_hol_night_hours': float(data.get('exact_hol_night_hours', 0)),
-            
             # Auto-Schedule Matrix
             'start_date': datetime.strptime(data.get('start_date'), "%Y-%m-%d").date(),
             'shift_in': data.get('shift_in', '08:00'),
@@ -73,7 +67,7 @@ def calculate_payroll():
             'short_out': data.get('short_out', '12:00'),
             'days_off': [int(d) for d in data.get('days_off', [5, 6])],
             
-            # Phase 3: Annual Benefits Matrix
+            # Annual Benefits Matrix
             'seniority': int(data.get('seniority', -1)),
             'days_worked': int(data.get('days_worked', 365)),
             'vac_percent': float(data.get('vac_percent', 30.0))
