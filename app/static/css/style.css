@@ -25,13 +25,13 @@
     --brand-gradient: linear-gradient(135deg, #00ff87 0%, #00bfa5 100%);
     --brand-text: #051911;
     --forecast-text: var(--text-color);
-    --baseline-bar: #9ba1a8; /* TRUE GRAY */
+    --baseline-bar: #9ba1a8; 
     
     /* Dynamic Box Tints (Dark Mode) */
-    --info-bg: rgba(0, 255, 135, 0.05); /* Green Tint */
+    --info-bg: rgba(0, 255, 135, 0.05);
     --info-border: rgba(0, 255, 135, 0.2);
-    --warning-text: #fdbb2d; /* Yellow */
-    --warning-bg: rgba(253, 187, 45, 0.05); /* Yellow Tint */
+    --warning-text: #fdbb2d; /* Yellow for Night / Horizon */
+    --warning-bg: rgba(253, 187, 45, 0.05); 
     --warning-border: rgba(253, 187, 45, 0.2);
 }
 
@@ -45,19 +45,19 @@
     --muted-color: #64748b;       
     --input-bg: #f8fafc;          
     --input-border: #94a3b8;
-    --highlight: #0284c7; /* Arch Blue */
+    --highlight: #0284c7; /* Dark Blue (Primary) */
     --mid-green: #38bdf8; 
     --brand-gradient: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
     --brand-text: #ffffff;
     --forecast-text: var(--highlight);
-    --baseline-bar: #64748b; /* SLATE GRAY */
+    --baseline-bar: #64748b; 
     
     /* Dynamic Box Tints (Light Mode) */
-    --info-bg: rgba(2, 132, 199, 0.05); /* Blue Tint */
+    --info-bg: rgba(2, 132, 199, 0.05); 
     --info-border: rgba(2, 132, 199, 0.2);
-    --warning-text: var(--highlight); /* Blue */
-    --warning-bg: rgba(2, 132, 199, 0.05); /* Blue Tint */
-    --warning-border: rgba(2, 132, 199, 0.2);
+    --warning-text: #38bdf8; /* Light Blue for Night / Horizon */
+    --warning-bg: rgba(56, 189, 248, 0.05); 
+    --warning-border: rgba(56, 189, 248, 0.2);
 }
 
 /* THEME 3: CHERRY WINE (Velvet & Sakura) */
@@ -70,19 +70,21 @@
     --muted-color: #d49ba8;       
     --input-bg: #4a2230;          
     --input-border: #6e354a;
-    --highlight: #ffb7c5; /* Sakura Pink */
-    --mid-green: #e65c7b; 
+    --highlight: #ffb7c5; /* Light Sakura Pink (Primary/Hustle) */
+    --mid-green: #e65c7b; /* Deep Pink */
     --brand-gradient: linear-gradient(135deg, #ffb7c5 0%, #e65c7b 100%);
     --brand-text: #2a111a;
     --forecast-text: var(--highlight);
-    --baseline-bar: #9ba1a8; /* TRUE GRAY */
+    --baseline-bar: #9ba1a8; 
     
     /* Dynamic Box Tints (Cherry Mode) */
-    --info-bg: rgba(255, 183, 197, 0.05); /* Pink Tint */
+    --info-bg: rgba(255, 183, 197, 0.05); /* Light Pink tint for Engine Auto-Detect */
     --info-border: rgba(255, 183, 197, 0.2);
-    --warning-text: var(--highlight); /* Pink */
-    --warning-bg: rgba(255, 183, 197, 0.05); /* Pink Tint */
-    --warning-border: rgba(255, 183, 197, 0.2);
+    
+    /* THE LIME GREEN INJECTION (A200) */
+    --warning-text: #eeff41; /* Lime Green for Night / Horizon */
+    --warning-bg: rgba(238, 255, 65, 0.05); /* Lime Green Tint */
+    --warning-border: rgba(238, 255, 65, 0.2);
 }
 
 /* ==========================================
@@ -244,4 +246,20 @@ input.flatpickr-input[readonly] { color: var(--text-color) !important; backgroun
     h4.fw-bold { border-bottom: 2px solid black; padding-bottom: 10px; margin-bottom: 15px !important; }
     .alert-box-custom { border: none !important; background: transparent !important; padding: 0 !important; margin-bottom: 15px !important; border-bottom: 1px dashed #aaa !important; }
     .mt-5 { margin-top: 1.5rem !important; }
+}
+
+/* ==========================================
+   11. TABBED NAVIGATION (RADAR & ORACLE)
+   ========================================== */
+.nav-pills .nav-link {
+    color: var(--text-color) !important;
+    background-color: var(--input-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    transition: all 0.3s ease;
+}
+.nav-pills .nav-link.active {
+    background: var(--brand-gradient) !important;
+    color: var(--brand-text) !important;
+    border-color: transparent !important;
+    box-shadow: 0 4px 15px rgba(0,0,0, 0.2) !important;
 }

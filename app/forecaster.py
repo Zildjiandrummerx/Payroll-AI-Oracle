@@ -33,22 +33,22 @@ def generate_forecasts(base_params, base_res, goal_name="", goal_amount=0.0, lan
     total_ot_pay = base_res['ot_pay'] + base_res['night_ot_pay']
     if total_ot_pay > 0:
         ann_ot = total_ot_pay * 24
-        txt = f"Your Overtime generated <strong>${total_ot_pay:.2f}</strong> this period. Annualized, this is <strong>${ann_ot:.2f}</strong> in extra net wealth. Keep grinding." if lang == 'en' else f"Tus horas extras generaron <strong>${total_ot_pay:.2f}</strong> hoy. Anualizado, esto es <strong>${ann_ot:.2f}</strong> en riqueza neta. Sigue así."
+        txt = f"Your Overtime generated <strong>${total_ot_pay:.2f}</strong> this period. Annualized, this represents <strong>${ann_ot:.2f}</strong> in extra net wealth." if lang == 'en' else f"Tus horas extras generaron <strong>${total_ot_pay:.2f}</strong> hoy. Anualizado, esto representa <strong>${ann_ot:.2f}</strong> en riqueza neta extra."
         radar.append({"title": "Hustle Yield" if lang == 'en' else "Rendimiento Extra", "text": txt, "icon": "fas fa-fire", "color": "var(--highlight)"})
     else:
         txt = "Zero overtime logged. 100% of your standard base salary is protected." if lang == 'en' else "Cero horas extras. El 100% de tu salario base está protegido."
-        radar.append({"title": "Base Secured" if lang == 'en' else "Base Asegurada", "text": txt, "icon": "fas fa-shield-alt", "color": "var(--mid-green)"})
+        radar.append({"title": "Base Secured" if lang == 'en' else "Base Asegurada", "text": txt, "icon": "fas fa-shield-alt", "color": "var(--highlight)"})
 
     # ---------------------------------------------------------
     # SLOT 2: THE FINANCIAL BLEED (Discipline check)
     # ---------------------------------------------------------
     if base_res['late_deduction'] > 0:
         ann_late = base_res['late_deduction'] * 24
-        txt = f"Lateness cost you <strong>${base_res['late_deduction']:.2f}</strong>. Left unchecked, this habit bleeds <strong>${ann_late:.2f}</strong> a year. Set your alarm." if lang == 'en' else f"Las tardanzas te costaron <strong>${base_res['late_deduction']:.2f}</strong>. Anualizado, este hábito te costará <strong>${ann_late:.2f}</strong>."
+        txt = f"Lateness cost you <strong>${base_res['late_deduction']:.2f}</strong>. Left unchecked, this behavior represents an annualized loss of <strong>${ann_late:.2f}</strong>." if lang == 'en' else f"Las tardanzas te costaron <strong>${base_res['late_deduction']:.2f}</strong>. Anualizado, este comportamiento representa una pérdida de <strong>${ann_late:.2f}</strong>."
         radar.append({"title": "Financial Bleed" if lang == 'en' else "Fuga Financiera", "text": txt, "icon": "fas fa-tint-slash", "color": "#ff4b4b"})
     else:
         txt = "Zero lateness detected. Maximum efficiency and payout achieved." if lang == 'en' else "Cero tardanzas detectadas. Eficiencia y pago máximo alcanzados."
-        radar.append({"title": "Flawless Attendance" if lang == 'en' else "Asistencia Perfecta", "text": txt, "icon": "fas fa-check-circle", "color": "var(--mid-green)"})
+        radar.append({"title": "Flawless Attendance" if lang == 'en' else "Asistencia Perfecta", "text": txt, "icon": "fas fa-check-circle", "color": "var(--highlight)"})
 
     # ---------------------------------------------------------
     # SLOT 3: THE HOLIDAY RADAR (Scans 45 Days Ahead)
@@ -72,11 +72,13 @@ def generate_forecasts(base_params, base_res, goal_name="", goal_amount=0.0, lan
         boost = sim_res['net'] - base_res['net']
         
         d_str = date_obj.strftime('%b %d')
-        txt = f"<strong>{h_name} ({d_str})</strong> is approaching. Volunteering for this statutory holiday yields a projected <strong>${boost:.2f}</strong> Net spike." if lang == 'en' else f"<strong>{h_name} ({d_str})</strong> se acerca. Trabajar en este asueto de ley generará un bono neto de <strong>${boost:.2f}</strong>."
-        radar.append({"title": "Upcoming Horizon" if lang == 'en' else "Próximo Horizonte", "text": txt, "icon": "fas fa-calendar-star", "color": "var(--highlight)"})
+        txt = f"<strong>{h_name} ({d_str})</strong> is approaching. Logging hours on a statutory holiday yields a projected <strong>${boost:.2f}</strong> Net spike." if lang == 'en' else f"<strong>{h_name} ({d_str})</strong> se acerca. Trabajar en este asueto de ley proyecta un incremento neto de <strong>${boost:.2f}</strong>."
+        
+        # Now strictly bound to --warning-text (Lime Green / Light Blue / Yellow)
+        radar.append({"title": "Upcoming Horizon" if lang == 'en' else "Próximo Horizonte", "text": txt, "icon": "fas fa-calendar-day", "color": "var(--warning-text)"})
     else:
         txt = "No mandatory statutory holidays detected in the next 45 days." if lang == 'en' else "No se detectan asuetos obligatorios en los próximos 45 días."
-        radar.append({"title": "Clear Horizon" if lang == 'en' else "Horizonte Despejado", "text": txt, "icon": "fas fa-sun", "color": "var(--muted-color)"})
+        radar.append({"title": "Clear Horizon" if lang == 'en' else "Horizonte Despejado", "text": txt, "icon": "fas fa-calendar-check", "color": "var(--muted-color)"})
 
     # ---------------------------------------------------------
     # TAB 2: THE GOAL ORACLE (Marginal Tax Rate Simulator)
@@ -108,10 +110,10 @@ def generate_forecasts(base_params, base_res, goal_name="", goal_amount=0.0, lan
         else:
             meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
             m_name = meses[target_date.month - 1]
-            oracle_text = f"Para comprar <strong>{safe_name}</strong> (${goal_amount:,.2f}), ahorrando el 15% de tu pago neto, alcanzarás tu meta en <strong>{m_name} {target_date.year}</strong>. ¿Lo quieres más rápido? Estás a exactamente <strong>{hours_needed:.1f} horas extras</strong> de comprarlo de contado."
+            oracle_text = f"Para adquirir <strong>{safe_name}</strong> (${goal_amount:,.2f}), ahorrando el 15% de tu pago neto, alcanzarás tu meta en <strong>{m_name} {target_date.year}</strong>. ¿Lo necesitas antes? Estás a exactamente <strong>{hours_needed:.1f} horas extras</strong> de costearlo."
     else:
         # The Default State before they hit the button
-        oracle_text = "Enter a goal and amount above to consult the Engine." if lang == 'en' else "Ingresa una meta y un monto arriba para consultar al Motor."
+        oracle_text = "Enter a financial goal and target amount above to consult the Engine." if lang == 'en' else "Ingresa una meta financiera y un monto arriba para consultar al Motor."
 
     return {
         "radar": radar,
