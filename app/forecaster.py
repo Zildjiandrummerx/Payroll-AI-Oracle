@@ -33,7 +33,7 @@ def generate_forecasts(base_params, base_res, goal_name="", goal_amount=0.0, lan
     total_ot_pay = base_res['ot_pay'] + base_res['night_ot_pay']
     if total_ot_pay > 0:
         ann_ot = total_ot_pay * 24
-        txt = f"Your Overtime generated <strong>${total_ot_pay:.2f}</strong> this period. Annualized, this represents <strong>${ann_ot:.2f}</strong> in extra net wealth." if lang == 'en' else f"Tus horas extras generaron <strong>${total_ot_pay:.2f}</strong> hoy. Anualizado, esto representa <strong>${ann_ot:.2f}</strong> en riqueza neta extra."
+        txt = f"Your Overtime generated <strong>${total_ot_pay:.2f}</strong> this period. Annualized, this represents <strong>${ann_ot:.2f}</strong> in extra net income." if lang == 'en' else f"Tus horas extras generaron <strong>${total_ot_pay:.2f}</strong> hoy. Anualizado, esto representa <strong>${ann_ot:.2f}</strong> en ingreso neto extra."
         radar.append({"title": "Hustle Yield" if lang == 'en' else "Rendimiento Extra", "text": txt, "icon": "fas fa-fire", "color": "var(--highlight)"})
     else:
         txt = "Zero overtime logged. 100% of your standard base salary is protected." if lang == 'en' else "Cero horas extras. El 100% de tu salario base está protegido."

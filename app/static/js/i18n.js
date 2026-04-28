@@ -19,7 +19,7 @@
 export const i18n = {
     en: {
         // Navbar & Inputs
-        nav_title: "YotchApps | SV Payroll",
+        nav_title: "SV Payroll Engine",
         t_engine: "Time & Pay Engine", t_base_fin: "1. Base Financials", l_salary: "Monthly Salary ($)", l_bonus: "Bonus ($)",
         t_auto_sched: "2. Auto-Schedule", l_start: "Semi-Monthly Start Date", h_scan: "Engine automatically scans 15 days for SV Holidays.",
         l_std_in: "Standard In", l_std_out: "Standard Out", l_short_day: "Short Day", l_short_in: "Short Day (In)", l_short_out: "Short Day (Out)",
@@ -85,7 +85,7 @@ export const i18n = {
     },
     es: {
         // Navbar & Inputs
-        nav_title: "YotchApps | Planilla SV",
+        nav_title: "Motor de Planilla SV",
         t_engine: "Motor de Tiempo y Pago", t_base_fin: "1. Fundamentos Financieros", l_salary: "Salario Mensual ($)", l_bonus: "Bono ($)",
         t_auto_sched: "2. Auto-Agendamiento", l_start: "Fecha de Inicio (Quincena)", h_scan: "El motor escanea automáticamente 15 días buscando asuetos.",
         l_std_in: "Entrada Normal", l_std_out: "Salida Normal", l_short_day: "Día Corto", l_short_in: "Día Corto (Entrada)", l_short_out: "Día Corto (Salida)",
@@ -176,7 +176,6 @@ export function translatePage(lang) {
     const customDed = document.getElementById('customDeductions');
     if (customDed) customDed.placeholder = lang === 'en' ? "e.g. 110.50 + 8.45" : "ej. 110.50 + 8.45";
     
-    // Translate Oracle Placeholders dynamically
     const goalName = document.getElementById('goalName');
     if (goalName) goalName.placeholder = lang === 'en' ? "e.g. Used Honda Civic" : "ej. Carro Usado (Honda)";
 
