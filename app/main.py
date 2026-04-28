@@ -37,6 +37,14 @@ def calculate_payroll():
     data = request.get_json() or {}
     lang = data.get('lang', 'en')
 
+    # Extract Goal Oracle Inputs (Optional)
+    goal_name = data.get('goal_name', '')
+    goal_amount = 0.0
+    try:
+        goal_amount = float(data.get('goal_amount', 0))
+    except (ValueError, TypeError):
+        goal_amount = 0.0
+
     # ==========================================
     # 1. PAYLOAD PARSING & TYPE CASTING
     # ==========================================
@@ -85,20 +93,20 @@ def calculate_payroll():
         return jsonify({'error': msg}), 400
     
     # Block massive float overflow attacks designed to crash container memory
-    if params['monthly_base'] > 1000000 or params['extra_bonus'] > 1000000:
+    if params['monthly_base'] > 1000000 or params['extra_bonus'] > 1000000 or goal_amount > 1000000:
         msg = 'El salario excede el límite máximo.' if lang == 'es' else 'Salary exceeds maximum limit. Ask for a raise in real life.'
         return jsonify({'error': msg}), 400
 
     # ==========================================
     # 3. ENGINE ORCHESTRATION
     # ==========================================
-    # Calculate the exact current Quincena math
+    # Calculate the exact current Quincena math FIRST
     final_response = calculate_quincena(params)
     
-    # Send the parameters to the Machine Learning Forecaster to project the next 3 tiers
-    future_forecasts = generate_forecasts(params, lang)
+    # Send BOTH the params and the final calculated math to the Forecaster for analysis
+    future_forecasts = generate_forecasts(params, final_response, goal_name, goal_amount, lang)
     
-    # Bundle the forecasts inside the main dictionary
+    # Bundle the intelligent insights inside the main dictionary
     final_response["forecasts"] = future_forecasts
 
     # Dispatch the massive JSON payload back to the JavaScript render engine

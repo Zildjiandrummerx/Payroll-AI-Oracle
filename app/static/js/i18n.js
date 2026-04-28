@@ -60,8 +60,11 @@ export const i18n = {
         t_annual_out: "Annual Benefits", p_vac_bonus: "Vacation Bonus", p_agui: "Christmas Bonus",
         p_annual_disc: "<i class=\"fas fa-info-circle me-1\" style=\"color: var(--highlight);\"></i> These annual payments are <strong>not</strong> included in the 15-day Net Pay above. Vacation bonuses are exempt from statutory deductions.",
         
-        // Forecasts & Legal Guide
-        f_title: "Financial Horizon", f_desc: "Projections based on statutory holiday analysis and behavioral modeling. Actual payout may vary.",
+        // AI Insights & Oracle
+        f_title: "AI Financial Insights", t_radar: "Radar", t_oracle: "Oracle",
+        l_goal_name: "What are you saving for?", l_goal_amount: "Target Amount ($)", btn_oracle: "Consult Oracle",
+        
+        // Legal Guide
         lg_title: "Legal Guide", lg_ded: "Mandatory Deductions", lg_afp: "<strong>AFP (7.25%):</strong> Your contribution to your pension fund. Your employer also contributes an additional 8.75% on your behalf.",
         lg_isss: "<strong>ISSS (3%):</strong> Social Security deduction, capped at a maximum of $30.00 monthly. Employer pays an additional 7.5%.",
         lg_hol: "Mandatory Holidays", lg_hol_desc: "Employees working on a mandatory holiday earn double their standard salary for that day.",
@@ -123,8 +126,11 @@ export const i18n = {
         t_annual_out: "Beneficios Anuales", p_vac_bonus: "Bono por Vacaciones", p_agui: "Aguinaldo",
         p_annual_disc: "<i class=\"fas fa-info-circle me-1\" style=\"color: var(--highlight);\"></i> Estos pagos anuales <strong>no</strong> se incluyen en el salario quincenal mostrado arriba. El bono vacacional está exento de descuentos legales.",
         
-        // Forecasts & Legal Guide
-        f_title: "Horizonte Financiero", f_desc: "Proyecciones basadas en análisis de asuetos y modelos de comportamiento. El pago real puede variar.",
+        // AI Insights & Oracle
+        f_title: "Asesor Financiero IA", t_radar: "Radar", t_oracle: "Oráculo",
+        l_goal_name: "¿Para qué estás ahorrando?", l_goal_amount: "Monto Meta ($)", btn_oracle: "Consultar Oráculo",
+        
+        // Legal Guide
         lg_title: "Guía Legal", lg_ded: "Descuentos de Ley", lg_afp: "<strong>AFP (7.25%):</strong> Tu aporte al fondo de pensiones. Tu empleador aporta un 8.75% adicional.",
         lg_isss: "<strong>ISSS (3%):</strong> Seguro Social, con techo máximo de $30.00 mensuales. Tu empleador aporta un 7.5% adicional.",
         lg_hol: "Asuetos de Ley", lg_hol_desc: "Los empleados que trabajan en un asueto obligatorio ganan el doble de su salario estándar por ese día.",
@@ -145,36 +151,20 @@ export const i18n = {
     }
 };
 
-/**
- * ==========================================
- * STATE MANAGEMENT
- * ==========================================
- * Global variable storing the current language state.
- * Accessible via getCurrentLang() across modules.
- */
 let currentLang = 'en';
 
 export function getCurrentLang() { 
     return currentLang; 
 }
 
-/**
- * ==========================================
- * THE DOM TRANSLATION ENGINE
- * ==========================================
- * Executes a highly performant DOM sweep to instantly swap text, 
- * placeholders, and Bootstrap Tooltips to the selected language.
- */
 export function translatePage(lang) {
     currentLang = lang;
     
-    // 1. Translate Standard Text elements (h6, span, p, li)
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (i18n[lang][key]) el.innerHTML = i18n[lang][key];
     });
     
-    // 2. Translate MDB Tooltips (title attribute & mdb-original-title)
     document.querySelectorAll('[data-i18n-title]').forEach(el => {
         const key = el.getAttribute('data-i18n-title');
         if (i18n[lang][key]) {
@@ -183,14 +173,13 @@ export function translatePage(lang) {
         }
     });
 
-    // 3. Translate Dynamic Placeholders (Input fields)
     const customDed = document.getElementById('customDeductions');
     if (customDed) customDed.placeholder = lang === 'en' ? "e.g. 110.50 + 8.45" : "ej. 110.50 + 8.45";
+    
+    // Translate Oracle Placeholders dynamically
+    const goalName = document.getElementById('goalName');
+    if (goalName) goalName.placeholder = lang === 'en' ? "e.g. Used Honda Civic" : "ej. Carro Usado (Honda)";
 
-    // 4. Trigger Python Re-Calculation
-    // If the user has already generated a payslip, we must silently resubmit the 
-    // payload to Python. This ensures that the Machine Learning "Insights" and 
-    // "Engine Logs" are generated in the correct language by the backend.
     const engineLogs = document.getElementById('engine-logs');
     if (window.lastCalcData && engineLogs) {
         engineLogs.innerText = lang === 'en' 
@@ -201,13 +190,6 @@ export function translatePage(lang) {
     }
 }
 
-/**
- * ==========================================
- * BOOT INITIALIZATION
- * ==========================================
- * Binds the click event to the Navbar translation button and 
- * runs the first translation sweep upon application load.
- */
 export function initI18n() {
     const langBtn = document.getElementById('lang-toggle');
     const langLabel = document.getElementById('lang-label');
@@ -220,6 +202,5 @@ export function initI18n() {
         });
     }
     
-    // Force the first paint on DOM Boot
     translatePage(currentLang);
 }

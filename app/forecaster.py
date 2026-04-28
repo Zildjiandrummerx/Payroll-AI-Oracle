@@ -1,107 +1,119 @@
 """
 ==============================================================================
-YOTCHAPPS PAYROLL ENGINE - STOCHASTIC FORECASTING MODULE
+YOTCHAPPS PAYROLL ENGINE - STOCHASTIC FORECASTING & ORACLE MODULE
 ==============================================================================
-This module is a stateless "Time Machine". It ingests the user's current 
-mathematical parameters, advances the calendar by 15 days, and generates 
-three psychological behavioral tiers. 
+This module acts as the "AI Financial Advisor". It shifts from descriptive math 
+to prescriptive advice by running hidden simulations on the user's marginal tax 
+rates and upcoming calendar.
 
 Core Responsibilities:
-1. Deterministic Time-Travel: Pushes the start_date forward to detect future holidays.
-2. The Hustle Tier (Scenario 1): Assumes the user maintains their exact current habits.
-3. The Baseline Tier (Scenario 2): Wipes all variables to 0 to show absolute minimum pay.
-4. The Scare Tier (Scenario 3): Injects 4 hours of Lateness to show financial damage.
-5. Localization: Outputs the insights in either English or Salvadoran-Spanish.
+1. The Habit Tracker: Annualizes their current Overtime/Lateness to show compounded wealth/bleed.
+2. The Holiday Radar: Scans 45 days into the future for SV Statutory Holidays.
+3. The Goal Oracle: Simulates exactly 1 extra hour of OT to find their marginal 
+   post-tax hourly rate, then divides it against their personal goal.
+4. XSS Security: Uses markupsafe.escape to neutralize hijacked string inputs.
 ==============================================================================
 """
 
+import holidays
 from datetime import timedelta
+from markupsafe import escape
 from .calculator import calculate_quincena
 
-def generate_forecasts(base_params, lang='en'):
+def generate_forecasts(base_params, base_res, goal_name="", goal_amount=0.0, lang='en'):
     """
-    Executes the 3-Tier Psychological Forecast Array for the upcoming payroll period.
-    Returns a list of dictionaries injected with dynamic CSS color variables.
+    Executes the Smart Radar and the Oracle Simulation.
+    Returns a unified JSON dictionary to feed the Tabbed UI in Column 3.
     """
-    forecasts = []
-    
-    # Time-Travel: Advance the exact Quincena start date by 15 days
-    next_date = base_params['start_date'] + timedelta(days=15)
+    radar = []
     
     # ---------------------------------------------------------
-    # SCENARIO 1: CURRENT TRAJECTORY (THE HUSTLE)
+    # SLOT 1: THE HUSTLE YIELD (Always present to maintain symmetry)
     # ---------------------------------------------------------
-    # Takes their current input, strips away one-off bonuses, but maintains 
-    # their exact Overtime and Lateness habits.
-    p1 = base_params.copy()
-    p1['start_date'] = next_date
-    p1['extra_bonus'] = 0.0 # Bonuses are one-time events, so we wipe them for the future
-    res1 = calculate_quincena(p1)
+    total_ot_pay = base_res['ot_pay'] + base_res['night_ot_pay']
+    if total_ot_pay > 0:
+        ann_ot = total_ot_pay * 24
+        txt = f"Your Overtime generated <strong>${total_ot_pay:.2f}</strong> this period. Annualized, this is <strong>${ann_ot:.2f}</strong> in extra net wealth. Keep grinding." if lang == 'en' else f"Tus horas extras generaron <strong>${total_ot_pay:.2f}</strong> hoy. Anualizado, esto es <strong>${ann_ot:.2f}</strong> en riqueza neta. Sigue así."
+        radar.append({"title": "Hustle Yield" if lang == 'en' else "Rendimiento Extra", "text": txt, "icon": "fas fa-fire", "color": "var(--highlight)"})
+    else:
+        txt = "Zero overtime logged. 100% of your standard base salary is protected." if lang == 'en' else "Cero horas extras. El 100% de tu salario base está protegido."
+        radar.append({"title": "Base Secured" if lang == 'en' else "Base Asegurada", "text": txt, "icon": "fas fa-shield-alt", "color": "var(--mid-green)"})
+
+    # ---------------------------------------------------------
+    # SLOT 2: THE FINANCIAL BLEED (Discipline check)
+    # ---------------------------------------------------------
+    if base_res['late_deduction'] > 0:
+        ann_late = base_res['late_deduction'] * 24
+        txt = f"Lateness cost you <strong>${base_res['late_deduction']:.2f}</strong>. Left unchecked, this habit bleeds <strong>${ann_late:.2f}</strong> a year. Set your alarm." if lang == 'en' else f"Las tardanzas te costaron <strong>${base_res['late_deduction']:.2f}</strong>. Anualizado, este hábito te costará <strong>${ann_late:.2f}</strong>."
+        radar.append({"title": "Financial Bleed" if lang == 'en' else "Fuga Financiera", "text": txt, "icon": "fas fa-tint-slash", "color": "#ff4b4b"})
+    else:
+        txt = "Zero lateness detected. Maximum efficiency and payout achieved." if lang == 'en' else "Cero tardanzas detectadas. Eficiencia y pago máximo alcanzados."
+        radar.append({"title": "Flawless Attendance" if lang == 'en' else "Asistencia Perfecta", "text": txt, "icon": "fas fa-check-circle", "color": "var(--mid-green)"})
+
+    # ---------------------------------------------------------
+    # SLOT 3: THE HOLIDAY RADAR (Scans 45 Days Ahead)
+    # ---------------------------------------------------------
+    sv_holidays = holidays.country_holidays('SV', years=[base_params['start_date'].year, base_params['start_date'].year + 1])
+    found_holiday = None
     
-    insight1 = "Mantiene tus hábitos actuales de Horas Extras y Tardanzas." if lang == 'es' else "Maintains your current Overtime and Lateness habits."
-    if res1['engine']['holiday_hours'] > 0:
-        insight1 += " ¡Incluye asueto de ley!" if lang == 'es' else " Includes statutory Holiday pay!"
+    # Fast-forward time loop
+    for i in range(1, 46):
+        check_date = base_params['start_date'] + timedelta(days=i)
+        if check_date in sv_holidays:
+            found_holiday = (check_date, sv_holidays.get(check_date))
+            break
+            
+    if found_holiday:
+        date_obj, h_name = found_holiday
+        # Simulate an 8-hour boost using their exact hourly rate
+        p_sim = base_params.copy()
+        p_sim['extra_bonus'] += (8 * base_res['rates']['hourly'])
+        sim_res = calculate_quincena(p_sim)
+        boost = sim_res['net'] - base_res['net']
         
-    forecasts.append({
-        "scenario": "Proyección Actual" if lang == 'es' else "Current Trajectory",
-        "date_str": next_date.strftime("%b %d, %Y"),
-        "net_pay": res1['net'],
-        "insight": insight1,
-        "color": "var(--highlight)" # Binds to Neon Green / Arch Blue dynamically via CSS
-    })
-    
+        d_str = date_obj.strftime('%b %d')
+        txt = f"<strong>{h_name} ({d_str})</strong> is approaching. Volunteering for this statutory holiday yields a projected <strong>${boost:.2f}</strong> Net spike." if lang == 'en' else f"<strong>{h_name} ({d_str})</strong> se acerca. Trabajar en este asueto de ley generará un bono neto de <strong>${boost:.2f}</strong>."
+        radar.append({"title": "Upcoming Horizon" if lang == 'en' else "Próximo Horizonte", "text": txt, "icon": "fas fa-calendar-star", "color": "var(--highlight)"})
+    else:
+        txt = "No mandatory statutory holidays detected in the next 45 days." if lang == 'en' else "No se detectan asuetos obligatorios en los próximos 45 días."
+        radar.append({"title": "Clear Horizon" if lang == 'en' else "Horizonte Despejado", "text": txt, "icon": "fas fa-sun", "color": "var(--muted-color)"})
+
     # ---------------------------------------------------------
-    # SCENARIO 2: STRICT BASELINE
+    # TAB 2: THE GOAL ORACLE (Marginal Tax Rate Simulator)
     # ---------------------------------------------------------
-    # Strips absolutely every variable to 0. Shows the user what their paycheck
-    # will look like if they just clock in and clock out perfectly on time.
-    p2 = base_params.copy()
-    p2['start_date'] = next_date
-    p2['ot_hours'] = 0.0
-    p2['night_ot_hours'] = 0.0
-    p2['late_hours'] = 0.0
-    p2['extra_bonus'] = 0.0
-    p2['custom_deductions'] = 0.0
-    res2 = calculate_quincena(p2)
-    
-    insight2 = "Cero Horas Extras. Cero Tardanzas. Salario base puro." if lang == 'es' else "Zero Overtime. Zero Lateness. Pure base pay."
-    if res2['engine']['holiday_hours'] > 0:
-        insight2 += " (Afectado por asueto)." if lang == 'es' else " (Boosted by Holiday)."
+    oracle_text = ""
+    if goal_amount > 0 and goal_name:
+        # SECURITY LAYER: Sanitize input to block <script> injections
+        safe_name = escape(goal_name)
         
-    forecasts.append({
-        "scenario": "Línea Base Estricta" if lang == 'es' else "Strict Baseline",
-        "date_str": next_date.strftime("%b %d, %Y"),
-        "net_pay": res2['net'],
-        "insight": insight2,
-        "color": "var(--baseline-bar)" # Binds to True Gray / Cherry White dynamically
-    })
-    
-    # ---------------------------------------------------------
-    # SCENARIO 3: PENALTY RISK (THE SCARE TIER)
-    # ---------------------------------------------------------
-    # Wipes all overtime (so they don't see extra money), and violently injects
-    # lateness hours. This provides a psychological deterrent against misbehaving.
-    p3 = base_params.copy()
-    p3['start_date'] = next_date
-    p3['ot_hours'] = 0.0
-    p3['night_ot_hours'] = 0.0
-    p3['extra_bonus'] = 0.0
-    
-    # THE PENALTY INJECTION LOGIC: 
-    # If they currently have 0 late hours, warn them by simulating 4 hours of lateness. 
-    # If they already have lateness, double it to scare them further.
-    scare_hours = 4.0 if base_params['late_hours'] == 0 else round(base_params['late_hours'] * 2, 2)
-    p3['late_hours'] = scare_hours
-    res3 = calculate_quincena(p3)
-    
-    insight3 = f"Advertencia: Muestra la pérdida financiera por {scare_hours} hrs de tardanza." if lang == 'es' else f"Warning: Shows the financial damage of {scare_hours} hrs of lateness."
-    
-    forecasts.append({
-        "scenario": "Riesgo de Penalización" if lang == 'es' else "Penalty Risk",
-        "date_str": next_date.strftime("%b %d, %Y"),
-        "net_pay": res3['net'],
-        "insight": insight3,
-        "color": "#ff4b4b" # Danger Red
-    })
-    
-    return forecasts
+        # MARGINAL TAX SIMULATION: Calculate the exact post-tax value of 1 hour of OT
+        p_plus = base_params.copy()
+        p_plus['ot_hours'] += 1.0
+        res_plus = calculate_quincena(p_plus)
+        marginal_net = res_plus['net'] - base_res['net']
+        
+        if marginal_net <= 0: marginal_net = base_res['rates']['hourly'] # Failsafe
+        
+        hours_needed = goal_amount / marginal_net
+        
+        # Assumption: User saves 15% of their base net pay towards their goal
+        savings_per_q = base_res['net'] * 0.15
+        if savings_per_q <= 0: savings_per_q = 1.0 # Failsafe against division by zero
+        
+        q_needed = goal_amount / savings_per_q
+        target_date = base_params['start_date'] + timedelta(days=int(q_needed * 15))
+        
+        if lang == 'en':
+            oracle_text = f"To afford <strong>{safe_name}</strong> (${goal_amount:,.2f}), assuming you save 15% of your current Net Pay, you will reach your goal by <strong>{target_date.strftime('%B %Y')}</strong>. Need it faster? You are exactly <strong>{hours_needed:.1f} hours</strong> of Overtime away from buying it outright."
+        else:
+            meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+            m_name = meses[target_date.month - 1]
+            oracle_text = f"Para comprar <strong>{safe_name}</strong> (${goal_amount:,.2f}), ahorrando el 15% de tu pago neto, alcanzarás tu meta en <strong>{m_name} {target_date.year}</strong>. ¿Lo quieres más rápido? Estás a exactamente <strong>{hours_needed:.1f} horas extras</strong> de comprarlo de contado."
+    else:
+        # The Default State before they hit the button
+        oracle_text = "Enter a goal and amount above to consult the Engine." if lang == 'en' else "Ingresa una meta y un monto arriba para consultar al Motor."
+
+    return {
+        "radar": radar,
+        "oracle": oracle_text
+    }
